@@ -1,0 +1,1 @@
+export { default as plaketePng } from './DD25 - Plakete-01.png';

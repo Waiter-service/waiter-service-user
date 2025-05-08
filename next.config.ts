@@ -1,7 +1,36 @@
-import type { NextConfig } from "next";
+import { NextConfig } from 'next';
 
+/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'vvgpobmuptguzcfogfcj.supabase.co',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'jjfmpgcvfytnqutietqa.supabase.co',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
+  webpack(config: {
+    module: { rules: { test: RegExp; use: string[] }[] };
+    resolve: { fallback: Record<string, boolean> };
+  }) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    config.resolve.fallback = { fs: false, path: false };
+
+    return config;
+  },
 };
 
 export default nextConfig;
