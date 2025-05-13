@@ -1,7 +1,33 @@
+"use client";
 import Image from "next/image";
-
+import Narudzba from "./components/drinks/narudzba";
+import { Imenaproizvoda } from "./components/drinks/data";
+import { useState } from "react";
+import Potvrdinarudzbu from "./components/potvrdi";
 export default function Home() {
-  return (
+  return(
+    <div>
+      <div style={{ paddingBottom: "60px", paddingTop: "30px" }}>
+      <h1
+        style={{
+          textAlign: "center",
+          fontSize: "1.8rem",
+          marginBottom: "24px",
+          fontWeight: 600,
+          color: "white",
+        }}
+      >
+        Vaša narudžba
+      </h1></div>
+    {Imenaproizvoda.map((proizvod,i)=>(
+       
+      <Narudzba key={i} ime={proizvod.name} price={proizvod.cijena}  slika={proizvod.slika}></Narudzba>
+    ))}
+    <Potvrdinarudzbu></Potvrdinarudzbu>
+
+    </div>
+  );
+  /*return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
@@ -99,5 +125,5 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  );
+  );*/
 }
