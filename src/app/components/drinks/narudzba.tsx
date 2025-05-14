@@ -14,6 +14,7 @@ export default function Narudzba({ ime, price, slika }: NarudzbaProps) {
   const smanji = () => setKolicina(Math.max(kolicina - 1, 0));
   
     let cijena=price*kolicina;
+    
   return (
     <div
   style={{
