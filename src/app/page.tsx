@@ -149,4 +149,7 @@ export default function Home() {
 }
 // malo uredi dizajnerski da lipse izgleda(nac neku paletu boja i toga se drzat)
 //triba ustimat ovaj scroll da navbar ne oznaci nadolzeci section pre brzo(vecinski problem kad scrollas od dolje prema gore)
+//sirina nek bude mask 1440 stranice
+//responzivnost(do 320)
+//footer
 
