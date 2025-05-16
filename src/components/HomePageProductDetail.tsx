@@ -73,6 +73,7 @@ export default function HomePageProductDetail({
             const confirmRemove = confirm(`Remove "${name}" from your cart?`);
             if (confirmRemove) {
             localStorage.setItem("cart", JSON.stringify(newCart));
+            window.dispatchEvent(new Event("cartUpdated"));
             setQuantity(1);
             onClose();
             }
@@ -81,6 +82,7 @@ export default function HomePageProductDetail({
 
     const handleAddToCart = () => {
         updateLocalStorage(quantity);
+        window.dispatchEvent(new Event("cartUpdated"));
         alert(`Added ${quantity} ${name} to cart!`);
         onClose();
     };
