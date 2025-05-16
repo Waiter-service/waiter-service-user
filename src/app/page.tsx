@@ -4,6 +4,7 @@ import HomePageHeader from "@/components/HomePageHeader";
 import HomePageDrink from "@/components/HomePageDrink";
 import HomePageNavBar from "@/components/HomePageNavBar";
 import { useRef as reactUseRef, useEffect, useRef, useState } from "react";
+import HomePageFooter from "@/components/HomePageFooter";
 
 const sampleDrinks = [
   {
@@ -43,6 +44,7 @@ const sampleDrinks = [
     price: 2.5,
   },
 ];
+const sectionIds = ["most-popular", "hot-drink", "cold-drink", "alcoholic"];
 
 export default function Home() {
   const [currentSection, setCurrentSection] = useState("");
@@ -69,6 +71,11 @@ export default function Home() {
         threshold: 0.1,
       }
     );
+    
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
 
     Object.values(sectionRefs).forEach((ref) => {
       if (ref.current) observer.observe(ref.current);
@@ -144,12 +151,12 @@ export default function Home() {
           </div>
         </section>
      </main>
+
+     <HomePageFooter />
     </div>  
   );
 }
 // malo uredi dizajnerski da lipse izgleda(nac neku paletu boja i toga se drzat)
 //triba ustimat ovaj scroll da navbar ne oznaci nadolzeci section pre brzo(vecinski problem kad scrollas od dolje prema gore)
-//sirina nek bude mask 1440 stranice
-//responzivnost(do 320)
-//footer
+//dovrsi za single page product i modificaj sve za do 1440
 

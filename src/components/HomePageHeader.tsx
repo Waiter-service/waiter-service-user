@@ -22,8 +22,8 @@ export default function HomePageHeader() {
             </div>
             
             <div className="text-white">
-              <h1 className="text-4xl font-bold">Ime Kafane</h1>
-              <p className="text-lg mt-2">Yap Yap Yap Yap Yap!</p>
+              <h1 className="text-3xl font-bold">Ime Kafane</h1>
+              <p className="text-xs mt-2">Yap Yap Yap Yap Yap!</p>
             </div>
           </div>
         </div>

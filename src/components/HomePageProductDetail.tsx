@@ -92,7 +92,7 @@ export default function HomePageProductDetail({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/90 z-3">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[35%] relative">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[90%] relative">
         {/* Close Button */}
         <button
           className="absolute p-3 top-1 right-1 text-2xl text-gray-900 hover:text-gray-700 hover:bg-gray-200 rounded-full transition duration-200 ease-in-out cursor-pointer"
@@ -111,18 +111,18 @@ export default function HomePageProductDetail({
         <div className="rounded-lg shadow-xl p-3">
           {/* Content */}
           <div className="justify-center mx-auto space-y-2 p-2">
-            <h2 className="text-3xl font-bold text-black">{name}</h2>
+            <h2 className="text-1xl font-bold text-black">{name}</h2>
             <hr className="border-t-1 border-black" />
-            <p className="text-sm text-black">{description}</p>
+            <p className="text-xs text-black">{description}</p>
             <hr className="border-t-1 border-black" />
-            <p className="text-2xl font-semibold text-black">${price.toFixed(2)}</p>
+            <p className="text-xs font-semibold text-black">${price.toFixed(2)}</p>
           </div>
 
           {/* Quantity & Add Button */}
-          <div className="flex items-center justify-center mt-8 gap-6">
-            <div className="flex items-center justify-between w-[40%]">
+          <div className="flex items-center justify-center mt-8 gap-3 flex-col">
+            <div className="flex items-center justify-between w-[80%]">
               <button
-                className="bg-black p-3 text-white w-[25%] h-[20%] flex items-center justify-center rounded-[5.5] hover:bg-gray-800 transition duration-250 ease-in-out cursor-pointer text-xl disabled:text-gray-500 disabled:cursor-not-allowed"
+                className="bg-black p-3 text-white w-[25%] h-[10%] flex items-center justify-center rounded-[5.5] hover:bg-gray-800 transition duration-250 ease-in-out cursor-pointer text-xl disabled:text-gray-500 disabled:cursor-not-allowed text-xs"
                 onClick={handleDecrement}
                 disabled={!isInCart && quantity === 1}
               >
@@ -130,18 +130,18 @@ export default function HomePageProductDetail({
               </button>
               <p className="text-2xl font-semibold text-black mx-2">{quantity}</p>
               <button
-                className="bg-black p-3 text-white w-[25%] h-[20%] flex items-center justify-center rounded-[5.5] hover:bg-gray-800 transition duration-250 ease-in-out cursor-pointer text-xl"
+                className="bg-black p-3 text-white w-[25%] flex items-center justify-center rounded-[5.5] hover:bg-gray-800 transition duration-250 ease-in-out cursor-pointer text-xs"
                 onClick={handleIncrement}
               >
                 +
               </button>
             </div>
             <button
-              className="bg-black p-3 text-white w-[50%] flex items-center rounded-[5.5] hover:bg-gray-800 transition duration-250 ease-in-out cursor-pointer text-xl ml-4"
+              className="bg-black p-3 text-white w-[90%] flex items-center rounded-[5.5] hover:bg-gray-800 transition duration-250 ease-in-out cursor-pointer text-xl"
               onClick={handleAddToCart}
             >
-              <span className="flex-grow text-left">Add To Cart</span>
-              <span className="text-right">${(quantity * price).toFixed(2)}</span>
+              <span className="flex-grow text-left text-sm">Add To Cart</span>
+              <span className="text-right text-sm">${(quantity * price).toFixed(2)}</span>
             </button>
           </div>
         </div>
