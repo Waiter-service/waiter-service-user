@@ -4,27 +4,74 @@ import Narudzba from "./components/drinks/narudzba";
 import { Imenaproizvoda } from "./components/drinks/data";
 import { use, useState } from "react";
 import Potvrdinarudzbu from "./components/potvrdi";
+import ConfirmModal from "./components/drinks/ConfirmModal";
 export default function Home() {
-  const [amout,setamout]=useState([
-    Imenaproizvoda.map((p,i)=>({...p,amount:1}))
-  ]);
+  const [narudzbe, setNarudzbe] = useState(
+  Imenaproizvoda.map((p) => ({ ...p, amount: 1 }))
+);
+const [modalOpen, setModalOpen] = useState(false);
+const [proizvodZaBrisanje, setProizvodZaBrisanje] = useState<number | null>(null);
+  const povecaj = (index: number) => {
+  const nove = narudzbe.map((p, i) =>
+    i === index ? { ...p, amount: p.amount + 1 } : p
+  );
+  setNarudzbe(nove);
+};
+
+const smanji = (index: number) => {
+  const proizvod = narudzbe[index];
+  if (proizvod.amount === 1) {
+    setProizvodZaBrisanje(index);
+    setModalOpen(true);
+    return;
+  }
+  const nove = narudzbe.map((p, i) =>
+    i === index ? { ...p, amount: p.amount - 1 } : p
+  );
+  setNarudzbe(nove);
+};
+
+
+const ukupno = narudzbe.reduce((suma, p) => suma + p.cijena * p.amount, 0);
+
   return(
     <div className="pt-8 pb-16">
   <h1 className="text-center text-white text-[1.8rem] font-semibold mb-6">
     Vaša narudžba
   </h1>
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
-  {Imenaproizvoda.map((proizvod, i) => (
+  {narudzbe.map((proizvod, i) => (
     <Narudzba
       key={i}
       ime={proizvod.name}
       price={proizvod.cijena}
       slika={proizvod.slika}
-      
+      amount={proizvod.amount}
+      onPovecaj={() => povecaj(i)}
+      onSmanji={() => smanji(i)}
     />
-  ))}</div>
+  ))}
+</div>
 
-  <Potvrdinarudzbu />
+
+  <div className="text-white text-xl font-semibold text-center mt-6">
+  Ukupno: {ukupno.toFixed(2)} €
+</div>
+
+<Potvrdinarudzbu />
+{modalOpen && proizvodZaBrisanje !== null && (
+  <ConfirmModal
+    ime={narudzbe[proizvodZaBrisanje].name}
+    onCancel={() => setModalOpen(false)}
+    onConfirm={() => {
+      const nove = narudzbe.filter((_, i) => i !== proizvodZaBrisanje);
+      setNarudzbe(nove);
+      setModalOpen(false);
+      setProizvodZaBrisanje(null);
+    }}
+  />
+)}
+
 </div>
 
   );
