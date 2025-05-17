@@ -85,7 +85,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
+    <div className="mx-auto w-full max-w-[1440px]">
      <HomePageHeader />
 
      <HomePageNavBar currentSection={currentSection} />
@@ -158,5 +158,4 @@ export default function Home() {
 }
 // malo uredi dizajnerski da lipse izgleda(nac neku paletu boja i toga se drzat)
 //triba ustimat ovaj scroll da navbar ne oznaci nadolzeci section pre brzo(vecinski problem kad scrollas od dolje prema gore)
-//dovrsi za single page product i modificaj sve za do 1440
-
+//sredi za ove prijelaze malo velcinu fonta i sredi ovaj singlepage product

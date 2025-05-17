@@ -13,7 +13,7 @@ export default function HomePageHeader() {
         {/*Logo and Title*/}
         <div className="relative h-full flex items-center">
           <div className="flex items-center gap-8 ml-5 pt-26">
-            <div className="bg-white p-2 rounded-[8] shadow w-fit max-w-[25%]">
+            <div className="bg-white p-2 rounded-[8] shadow w-fit max-w-[30%]">
               <Image
                 src={coffeeBarSvg}
                 alt="Logo"
@@ -22,8 +22,8 @@ export default function HomePageHeader() {
             </div>
             
             <div className="text-white">
-              <h1 className="text-3xl font-bold">Ime Kafane</h1>
-              <p className="text-xs mt-2">Yap Yap Yap Yap Yap!</p>
+              <h1 className="text-2xl font-bold sm:text-4xl xl:text-[50px]">Ime Kafane</h1>
+              <p className="text-xs mt-2 sm:text-[15px] xl:text-[20px]">Yap Yap Yap Yap Yap!</p>
             </div>
           </div>
         </div>
