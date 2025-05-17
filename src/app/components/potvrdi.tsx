@@ -1,32 +1,12 @@
-export default function Potvrdinarudzbu(){
-    return(
-        <div
-  style={{
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    zIndex: 999,
-    backgroundColor: "#007aff",
-  }}
->
-  <button
-    style={{
-      width: "100%",
-      padding: "18px 0",
-      backgroundColor: "transparent",
-      color: "white",
-      border: "none",
-      fontSize: "1.1rem",
-      fontWeight: 600,
-      cursor: "pointer",
-      borderRadius: 0,
-    }}
-    onClick={() => alert("Narudžba potvrđena!")}
-  >
-     Potvrdi narudžbu
-  </button>
-</div>
-
-);
-};
+export default function Potvrdinarudzbu() {
+  return (
+    <div className="relative w-full z-[999] bg-blue-600 mt-5">
+      <button
+        className="w-full py-4 bg-transparent text-white border-none text-lg font-semibold cursor-pointer rounded-none"
+        onClick={() => alert("Narudžba potvrđena!")}
+      >
+        Potvrdi narudžbu
+      </button>
+    </div>
+  );
+}

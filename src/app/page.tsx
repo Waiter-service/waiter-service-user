@@ -2,30 +2,31 @@
 import Image from "next/image";
 import Narudzba from "./components/drinks/narudzba";
 import { Imenaproizvoda } from "./components/drinks/data";
-import { useState } from "react";
+import { use, useState } from "react";
 import Potvrdinarudzbu from "./components/potvrdi";
 export default function Home() {
+  const [amout,setamout]=useState([
+    Imenaproizvoda.map((p,i)=>({...p,amount:1}))
+  ]);
   return(
-    <div>
-      <div style={{ paddingBottom: "60px", paddingTop: "30px" }}>
-      <h1
-        style={{
-          textAlign: "center",
-          fontSize: "1.8rem",
-          marginBottom: "24px",
-          fontWeight: 600,
-          color: "white",
-        }}
-      >
-        Vaša narudžba
-      </h1></div>
-    {Imenaproizvoda.map((proizvod,i)=>(
-       
-      <Narudzba key={i} ime={proizvod.name} price={proizvod.cijena}  slika={proizvod.slika}></Narudzba>
-    ))}
-    <Potvrdinarudzbu></Potvrdinarudzbu>
+    <div className="pt-8 pb-16">
+  <h1 className="text-center text-white text-[1.8rem] font-semibold mb-6">
+    Vaša narudžba
+  </h1>
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
+  {Imenaproizvoda.map((proizvod, i) => (
+    <Narudzba
+      key={i}
+      ime={proizvod.name}
+      price={proizvod.cijena}
+      slika={proizvod.slika}
+      
+    />
+  ))}</div>
 
-    </div>
+  <Potvrdinarudzbu />
+</div>
+
   );
   /*return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

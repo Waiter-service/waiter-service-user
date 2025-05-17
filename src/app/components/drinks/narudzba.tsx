@@ -7,74 +7,40 @@ type NarudzbaProps = {
   slika: string;
 };
 
-export default function Narudzba({ ime, price, slika }: NarudzbaProps) {
+export default function Narudzba({ ime, price, slika}: NarudzbaProps) {
   const [kolicina, setKolicina] = useState(1);
 
   const povecaj = () => setKolicina(kolicina + 1);
   const smanji = () => setKolicina(Math.max(kolicina - 1, 0));
-  
-    let cijena=price*kolicina;
-    
+
+  const cijena = price * kolicina;
+
   return (
-    <div
-  style={{
-    display: "flex",
-    alignItems: "center",
-    borderRadius: "14px",
-    backgroundColor: "#1e1e1e", // TAMNA KARTICA
-    padding: "14px",
-    margin: "12px 16px",
-  }}
->
-  <img
-    src={slika}
-    alt={ime}
-    style={{
-      width: "80px",
-      height: "80px",
-      objectFit: "cover",
-      borderRadius: "10px",
-      marginRight: "16px",
-      backgroundColor: "#333", // fallback ako slika ne učita
-    }}
-  />
-  <div style={{ flex: 1 }}>
-    <h3 style={{ margin: 0, fontSize: "1.1rem", color: "#f5f5f5" }}>{ime}</h3>
-    <p style={{ margin: "6px 0", color: "#bbbbbb" }}>{cijena.toFixed(2)} €</p>
-    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "6px" }}>
-      <button
-        onClick={smanji}
-        style={{
-          width: "32px",
-          height: "32px",
-          borderRadius: "50%",
-          border: "none",
-          background: "#333",
-          fontSize: "1.2rem",
-          cursor: "pointer",
-          color: "#fff",
-        }}
-      >
-        −
-      </button>
-      <span style={{ minWidth: "20px", textAlign: "center", fontWeight: 600 }}>{kolicina}</span>
-      <button
-        onClick={povecaj}
-        style={{
-          width: "32px",
-          height: "32px",
-          borderRadius: "50%",
-          border: "none",
-          background: "#007aff",
-          color: "white",
-          fontSize: "1.2rem",
-          cursor: "pointer",
-        }}
-      >
-        +
-      </button>
+    <div className="flex items-center bg-[#1e1e1e] rounded-[14px] px-4 py-3 mx-4 my-3">
+      <img
+        src={slika}
+        alt={ime}
+        className="w-20 h-20 object-cover rounded-[10px] mr-4 bg-[#333]"
+      />
+      <div className="flex-1">
+        <h3 className="text-[1.1rem] text-[#f5f5f5] font-medium m-0">{ime}</h3>
+        <p className="text-[#bbbbbb] text-sm my-1">{cijena.toFixed(2)} €</p>
+        <div className="flex items-center gap-3 mt-2">
+          <button
+            onClick={smanji}
+            className="w-8 h-8 bg-[#333] text-white rounded-full text-lg font-semibold"
+          >
+            −
+          </button>
+          <span className="min-w-[20px] text-center font-semibold text-white">{kolicina}</span>
+          <button
+            onClick={povecaj}
+            className="w-8 h-8 bg-[#007aff] text-white rounded-full text-lg font-semibold"
+          >
+            +
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   );
-};
+}
