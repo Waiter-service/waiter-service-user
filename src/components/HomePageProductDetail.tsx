@@ -92,7 +92,7 @@ export default function HomePageProductDetail({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/90 z-3">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[90%] relative md:max-w-[60%] lg:max-w-[45%]">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-[90%] relative md:max-w-[60%] lg:max-w-[45%] sm:max-w-[80%]">
         {/* Close Button */}
         <button
           className="absolute p-3 top-1 right-1 text-2xl text-gray-900 hover:text-gray-700 hover:bg-gray-200 rounded-full transition duration-200 ease-in-out cursor-pointer"
