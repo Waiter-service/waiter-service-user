@@ -5,12 +5,31 @@ import { Imenaproizvoda } from "./components/drinks/data";
 import { use, useState } from "react";
 import Potvrdinarudzbu from "./components/potvrdi";
 import ConfirmModal from "./components/drinks/ConfirmModal";
+import PreporuceniProizvodi, { PreporuceniProizvod } from "./components/drinks/PreporuceniProizvodi";
+
 export default function Home() {
   const [narudzbe, setNarudzbe] = useState(
   Imenaproizvoda.map((p) => ({ ...p, amount: 1 }))
 );
 const [modalOpen, setModalOpen] = useState(false);
 const [proizvodZaBrisanje, setProizvodZaBrisanje] = useState<number | null>(null);
+const [preporuceni] = useState<PreporuceniProizvod[]>([
+  { name: "Sprite", cijena: 12, slika: "https://cjenik.co/storage/6569/conversions/sprite-025l-main_images.jpg" },
+  { name: "Rakija", cijena: 18, slika: "https://www.shutterstock.com/image-photo/cognac-bottle-isolated-on-black-600nw-1905115192.jpg" },
+]);
+const dodajPreporuceni = (novi: PreporuceniProizvod) => {
+  const postoji = narudzbe.find((p) => p.name === novi.name);
+
+  if (postoji) {
+    const nove = narudzbe.map((p) =>
+      p.name === novi.name ? { ...p, amount: p.amount + 1 } : p
+    );
+    setNarudzbe(nove);
+  } else {
+    setNarudzbe([...narudzbe, { ...novi, amount: 1 }]);
+  }
+};
+
   const povecaj = (index: number) => {
   const nove = narudzbe.map((p, i) =>
     i === index ? { ...p, amount: p.amount + 1 } : p
@@ -36,6 +55,7 @@ const ukupno = narudzbe.reduce((suma, p) => suma + p.cijena * p.amount, 0);
 
   return(
     <div className="pt-8 pb-16">
+      <div className="max-w-[1440px] mx-auto px-4">
   <h1 className="text-center text-white text-[1.8rem] font-semibold mb-6">
     Vaša narudžba
   </h1>
@@ -52,12 +72,13 @@ const ukupno = narudzbe.reduce((suma, p) => suma + p.cijena * p.amount, 0);
     />
   ))}
 </div>
+<PreporuceniProizvodi proizvodi={preporuceni} onDodaj={dodajPreporuceni} />
 
 
   <div className="text-white text-xl font-semibold text-center mt-6">
   Ukupno: {ukupno.toFixed(2)} €
 </div>
-
+</div>
 <Potvrdinarudzbu />
 {modalOpen && proizvodZaBrisanje !== null && (
   <ConfirmModal
@@ -72,8 +93,7 @@ const ukupno = narudzbe.reduce((suma, p) => suma + p.cijena * p.amount, 0);
   />
 )}
 
-</div>
-
+</div> 
   );
   /*return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
