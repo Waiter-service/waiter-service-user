@@ -13,7 +13,7 @@ export default function Home() {
 );
 const [modalOpen, setModalOpen] = useState(false);
 const [proizvodZaBrisanje, setProizvodZaBrisanje] = useState<number | null>(null);
-const [preporuceni] = useState<PreporuceniProizvod[]>([
+const [preporuceni, setPreporuceni] = useState<PreporuceniProizvod[]>([
   { name: "Sprite", cijena: 12, slika: "https://cjenik.co/storage/6569/conversions/sprite-025l-main_images.jpg" },
   { name: "Rakija", cijena: 18, slika: "https://www.shutterstock.com/image-photo/cognac-bottle-isolated-on-black-600nw-1905115192.jpg" },
 ]);
@@ -28,6 +28,9 @@ const dodajPreporuceni = (novi: PreporuceniProizvod) => {
   } else {
     setNarudzbe([...narudzbe, { ...novi, amount: 1 }]);
   }
+  setPreporuceni((prethodni) =>
+    prethodni.filter((p) => p.name !== novi.name)
+  );
 };
 
   const povecaj = (index: number) => {
