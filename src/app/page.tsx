@@ -1,10 +1,31 @@
+"use client"
 import { plaketePng } from "@/assets/images";
 import { instagramSvg } from "@/assets/icons";
 import Image from "next/image";
+import NarudzbaLoading from "./NarudzbaLoading";
+import { use, useState } from "react";
 
 export default function Home() {
+  const [loading, setLoading] = useState(false);
+
+const potvrdiNarudzbu = () => {
+  setLoading(true);
+  setTimeout(() => {
+    setLoading(false);
+    alert("Narudžba je potvrđena!");
+  }, 3000); // simulira pripremu 3 sekunde
+};
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <>
+    <button
+  onClick={potvrdiNarudzbu}
+  className="w-full bg-blue-500 text-white py-4 text-lg font-semibold"
+>
+  Potvrdi narudžbu
+</button>
+{loading && <NarudzbaLoading />} </>
+
+    /*<div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image src={plaketePng} alt="plakete" className="w-[100px] h-auto"/>
         <Image src={instagramSvg} alt="Instagram icon" className="w-[100px] h-auto" />
@@ -102,6 +123,6 @@ export default function Home() {
           Go to nextjs.org →
         </a>
       </footer>
-    </div>
+    </div> */
   );
 }
