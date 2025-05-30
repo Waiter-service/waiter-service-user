@@ -1,107 +1,161 @@
-import { plaketePng } from "@/assets/images";
-import { instagramSvg } from "@/assets/icons";
-import Image from "next/image";
+"use client";
+
+import HomePageHeader from "@/components/HomePageHeader";
+import HomePageDrink from "@/components/HomePageDrink";
+import HomePageNavBar from "@/components/HomePageNavBar";
+import { useRef as reactUseRef, useEffect, useRef, useState } from "react";
+import HomePageFooter from "@/components/HomePageFooter";
+
+const sampleDrinks = [
+  {
+    id: 1,
+    name: "Espresso",
+    description: "Strong and bold coffee shot.",
+    price: 2.5,
+  },
+  {
+    id: 2,
+    name: "Cappuccino",
+    description: "Rich espresso with steamed milk.",
+    price: 3.5,
+  },
+  {
+    id: 3,
+    name: "Latte",
+    description: "Smooth espresso with creamy milk.",
+    price: 3.0,
+  },
+  {
+    id: 4,
+    name: "Mocha",
+    description: "Chocolatey espresso with steamed milk.",
+    price: 4.0,
+  },
+  {
+    id: 5,
+    name: "Americano",
+    description: "Espresso with hot water.",
+    price: 2.0,
+  },
+  {
+    id: 6,
+    name: "Macchiato",
+    description: "Espresso with a dollop of foam.",
+    price: 2.5,
+  },
+];
+const sectionIds = ["most-popular", "hot-drink", "cold-drink", "alcoholic"];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image src={plaketePng} alt="plakete" className="w-[100px] h-auto"/>
-        <Image src={instagramSvg} alt="Instagram icon" className="w-[100px] h-auto" />
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentSection, setCurrentSection] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  const sectionRefs = {
+    "most-popular": useRef(null),
+    "hot-drink": useRef(null),
+    "cold-drink": useRef(null),
+    "alcoholic": useRef(null),
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setCurrentSection(entry.target.id);
+          }
+        });
+      },
+      { 
+        root: null,
+        rootMargin: '-20% 0px -50% 0px', //odi se igrat s namistanjem
+        threshold: 0.1,
+      }
+    );
+    
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    Object.values(sectionRefs).forEach((ref) => {
+      if (ref.current) observer.observe(ref.current);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="mx-auto w-full max-w-[1440px]">
+     <HomePageHeader />
+
+     <HomePageNavBar currentSection={currentSection} />
+
+     <main className="flex flex-col items-center justify-center mt-25 gap-5">
+      {/* Najpopularnije Section */}
+      <section id="most-popular"  ref={sectionRefs["most-popular"]} className="size-auto mb-12 scroll-mt-20">
+          <h1 className="text-4xl font-bold text-center mb-8">Najpopularnije</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sampleDrinks.map((mostPopularDrink) => (
+              <HomePageDrink
+                key={mostPopularDrink.id}
+                name={mostPopularDrink.name}
+                description={mostPopularDrink.description}
+                price={mostPopularDrink.price}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Topli Napitci Section */}
+        <section  id="hot-drink" ref={sectionRefs["hot-drink"]}  className="size-auto mb-12 scroll-mt-20">
+          <h1 className="text-4xl font-bold text-center mb-8">Topli Napitci</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sampleDrinks.map((hotDrink) => (
+              <HomePageDrink
+                key={hotDrink.id}
+                name={hotDrink.name}
+                description={hotDrink.description}
+                price={hotDrink.price}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Hladni Napitci Section */}
+        <section id="cold-drink" ref={sectionRefs["cold-drink"]} className="size-auto mb-12 scroll-mt-20">
+          <h1 className="text-4xl font-bold text-center mb-8">Hladni Napitci</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sampleDrinks.map((coldDrink) => (
+              <HomePageDrink
+                key={coldDrink.id}
+                name={coldDrink.name}
+                description={coldDrink.description}
+                price={coldDrink.price}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Alkoholna Pica Section */}
+        <section  id="alcoholic" ref={sectionRefs["alcoholic"]} className="size-auto mb-12 scroll-mt-20">
+          <h1 className="text-4xl font-bold text-center mb-8">Alkoholna Pica</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sampleDrinks.map((alcoholicDrink) => (
+              <HomePageDrink
+                key={alcoholicDrink.id}
+                name={alcoholicDrink.name}
+                description={alcoholicDrink.description}
+                price={alcoholicDrink.price} //odi dodat da se salje valjda i slika(i u HomePageDrink da se prima sliku)
+              />
+            ))}
+          </div>
+        </section>
+     </main>
+
+     <HomePageFooter />
+    </div>  
   );
 }
+// malo uredi dizajnerski da lipse izgleda(nac neku paletu boja i toga se drzat)
+//triba ustimat ovaj scroll da navbar ne oznaci nadolzeci section pre brzo(vecinski problem kad scrollas od dolje prema gore)
+//sredi za ove prijelaze malo velcinu fonta i sredi ovaj singlepage product
