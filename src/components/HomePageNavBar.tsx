@@ -62,11 +62,16 @@ export default function HomePageNavBar({ currentSection }: { currentSection: str
               <button
                 className="mt-2 sm:mt-0 sm:ml-6 text-sm md:text-lg font-medium px-3 py-1 md:px-4 md:py-2 rounded transition duration-300 text-white hover:bg-white/20 cursor-pointer"
                 onClick={() => {
-                  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+                  type CartItem = {
+                    name: string;
+                    quantity: number;
+                  };
+
+                  const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
                   if (cart.length > 0) {
                     alert(
                       "Your items" +
-                        cart.map((item: any) => `\n${item.name} (${item.quantity})`).join("") +
+                        cart.map((item) => `\n${item.name} (${item.quantity})`).join("") +
                         "\n\nThank you for your order!"
                     );
                   }

@@ -1,5 +1,4 @@
 import { CocaColaPng } from "@/assets/images";
-import { on } from "events";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -9,6 +8,12 @@ interface HomePageProductDetail {
   name: string;
   description: string;
   price: number;
+}
+
+interface CartItem {
+  name: string;
+  price: number;
+  quantity: number;
 }
 
 export default function HomePageProductDetail({
@@ -27,7 +32,13 @@ export default function HomePageProductDetail({
       document.body.style.overflow = "hidden";
 
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      const existingItem = cart.find((item: any) => item.name === name);
+      interface CartItem {
+        name: string;
+        price: number;
+        quantity: number;
+      }
+
+      const existingItem = cart.find((item: CartItem) => item.name === name);
 
       if (existingItem) {
         setQuantity(existingItem.quantity);
@@ -43,11 +54,12 @@ export default function HomePageProductDetail({
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isOpen]);
+  }, [isOpen, name]);
 
     const updateLocalStorage = (newQuantity: number) => {
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        const existingIndex = cart.findIndex((item: any) => item.name === name);
+
+        const existingIndex = cart.findIndex((item: CartItem) => item.name === name);
 
         if (existingIndex !== -1) {
         cart[existingIndex].quantity = newQuantity;
@@ -64,8 +76,8 @@ export default function HomePageProductDetail({
 
     const handleDecrement = () => {
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        const newCart = cart.filter((item: any) => item.name !== name);
-        const existingItem = cart.find((item: any) => item.name === name);
+        const newCart = cart.filter((item: CartItem) => item.name !== name);
+        const existingItem = cart.find((item: CartItem) => item.name === name);
         if (quantity > 1) {
             setQuantity((prev) => prev - 1); 
         } 
@@ -122,7 +134,7 @@ export default function HomePageProductDetail({
           <div className="flex items-center justify-center mt-8 gap-3 flex-col sm:flex-row">
             <div className="flex items-center justify-between w-[80%]">
               <button
-                className="bg-black p-3 text-white w-[25%] h-[10%] flex items-center justify-center rounded-[5.5] hover:bg-gray-800 transition duration-250 ease-in-out cursor-pointer text-xl disabled:text-gray-500 disabled:cursor-not-allowed text-xs  sm:text-base"
+                className="bg-black p-3 text-white w-[25%] h-[10%] flex items-center justify-center rounded-[5.5] hover:bg-gray-800 transition duration-250 ease-in-out cursor-pointer md:text-xl disabled:text-gray-500 disabled:cursor-not-allowed text-xs  sm:text-base"
                 onClick={handleDecrement}
                 disabled={!isInCart && quantity === 1}
               >

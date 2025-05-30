@@ -3,7 +3,7 @@
 import HomePageHeader from "@/components/HomePageHeader";
 import HomePageDrink from "@/components/HomePageDrink";
 import HomePageNavBar from "@/components/HomePageNavBar";
-import { useRef as reactUseRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HomePageFooter from "@/components/HomePageFooter";
 
 const sampleDrinks = [
@@ -67,7 +67,7 @@ export default function Home() {
       },
       { 
         root: null,
-        rootMargin: '-20% 0px -50% 0px', //odi se igrat s namistanjem
+        rootMargin: '-20% 0px -50% 0px', 
         threshold: 0.1,
       }
     );
