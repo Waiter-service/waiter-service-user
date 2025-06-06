@@ -1,29 +1,38 @@
-"use client"
-import { plaketePng } from "@/assets/images";
-import { instagramSvg } from "@/assets/icons";
-import Image from "next/image";
-import NarudzbaLoading from "./NarudzbaLoading";
-import { use, useState } from "react";
+'use client';
 
-export default function Home() {
-  const [loading, setLoading] = useState(false);
+import SegmentedProgressCircle from "./StatusCircle";
 
-const potvrdiNarudzbu = () => {
-  setLoading(true);
-  setTimeout(() => {
-    setLoading(false);
-    alert("Narudžba je potvrđena!");
-  }, 3000); // simulira pripremu 3 sekunde
-};
+type Status = "done" | "current" | "pending";
+
+interface Phase {
+  label: string;
+  status: Status;
+}
+
+export default function Page() {
+  const currentPhaseIndex = 0; 
+
+  const allLabels = ["Priprema", "Dostavlja se", "Stiže"];
+
+  const phases: Phase[] = allLabels.map((label, index) => {
+    let status: Status;
+    if (index < currentPhaseIndex) status = "done";
+    else if (index === currentPhaseIndex) status = "current";
+    else status = "pending";
+    return { label, status };
+  });
+
   return (
-    <>
-    <button
-  onClick={potvrdiNarudzbu}
-  className="w-full bg-blue-500 text-white py-4 text-lg font-semibold"
->
-  Potvrdi narudžbu
-</button>
-{loading && <NarudzbaLoading />} </>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <SegmentedProgressCircle phases={phases} />
+    </div>
+
+
+
+
+
+  
+
 
     /*<div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
