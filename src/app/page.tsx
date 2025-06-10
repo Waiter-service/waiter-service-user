@@ -12,7 +12,7 @@ interface Phase {
 export default function Page() {
   const currentPhaseIndex = 0; 
 
-  const allLabels = ["Priprema", "Dostavlja se", "Stiže"];
+  const allLabels = ["Šalje se", "Izrađuje se", "Stiže"];
 
   const phases: Phase[] = allLabels.map((label, index) => {
     let status: Status;
