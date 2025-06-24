@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const waiterServiceApi = axios.create({
-  baseURL: "http://localhost:3000/api", 
+  baseURL: "https://localhost:3000/api", 
   timeout: 5000,    
 });
