@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+    domains: ["digital-waiter-service.s3.eu-north-1.amazonaws.com"],
   },
   webpack(config: {
     module: { rules: { test: RegExp; use: string[] }[] };

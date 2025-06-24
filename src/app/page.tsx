@@ -1,161 +1,84 @@
 "use client";
 
-import HomePageHeader from "@/components/HomePageHeader";
-import HomePageDrink from "@/components/HomePageDrink";
-import HomePageNavBar from "@/components/HomePageNavBar";
-import { useEffect, useRef, useState } from "react";
-import HomePageFooter from "@/components/HomePageFooter";
-
-const sampleDrinks = [
-  {
-    id: 1,
-    name: "Espresso",
-    description: "Strong and bold coffee shot.",
-    price: 2.5,
-  },
-  {
-    id: 2,
-    name: "Cappuccino",
-    description: "Rich espresso with steamed milk.",
-    price: 3.5,
-  },
-  {
-    id: 3,
-    name: "Latte",
-    description: "Smooth espresso with creamy milk.",
-    price: 3.0,
-  },
-  {
-    id: 4,
-    name: "Mocha",
-    description: "Chocolatey espresso with steamed milk.",
-    price: 4.0,
-  },
-  {
-    id: 5,
-    name: "Americano",
-    description: "Espresso with hot water.",
-    price: 2.0,
-  },
-  {
-    id: 6,
-    name: "Macchiato",
-    description: "Espresso with a dollop of foam.",
-    price: 2.5,
-  },
-];
-const sectionIds = ["most-popular", "hot-drink", "cold-drink", "alcoholic"];
+import { useEffect, useState } from "react";
+import crypto from "crypto";
+import { useBarData } from "@/queries/hooks/useGetBarData";
 
 export default function Home() {
-  const [currentSection, setCurrentSection] = useState("");
+  const [decryptedData, setDecryptedData] = useState<{
+    barId: number;
+    tableId: number;
+  } | null>(null);
 
-  const sectionRefs = {
-    "most-popular": useRef(null),
-    "hot-drink": useRef(null),
-    "cold-drink": useRef(null),
-    "alcoholic": useRef(null),
-  };
+  const secretKey =
+    "5fbaef53eab424a62739b5935543a1522fddf462e00b59791aede33535886a5c";
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setCurrentSection(entry.target.id);
-          }
-        });
-      },
-      { 
-        root: null,
-        rootMargin: '-20% 0px -50% 0px', 
-        threshold: 0.1,
-      }
-    );
-    
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    const urlParams = new URLSearchParams(window.location.search);
+    const encryptedData = urlParams.get("site");
 
-    Object.values(sectionRefs).forEach((ref) => {
-      if (ref.current) observer.observe(ref.current);
-    });
+    console.log(encryptedData);
 
-    return () => observer.disconnect();
+    if (encryptedData) {
+      const data = decryptData(encryptedData);
+      console.log("Decrypted Data:", data.barId, data.tableId);
+      setDecryptedData(data);
+    }
   }, []);
+
+  function decryptData(encryptedData: string): {
+    barId: number;
+    tableId: number;
+  } {
+    const [ivHex, encryptedHex] = encryptedData.split(":");
+    const iv = Buffer.from(ivHex, "hex");
+    const encrypted = Buffer.from(encryptedHex, "hex");
+
+    const decipher = crypto.createDecipheriv(
+      "aes-256-cbc",
+      Buffer.from(secretKey, "hex"),
+      iv
+    );
+    let decrypted = decipher.update(encrypted);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
+
+    return JSON.parse(decrypted.toString("utf8"));
+  }
+
+  if (decryptedData) {
+    console.log("Decrypted Data:", decryptedData.barId, decryptedData.tableId);
+  }
+
+  const { data } = useBarData(decryptedData?.barId || 1);
+
+  console.log(data);
 
   return (
     <div className="mx-auto w-full max-w-[1440px]">
-     <HomePageHeader />
-
-     <HomePageNavBar currentSection={currentSection} />
-
-     <main className="flex flex-col items-center justify-center mt-25 gap-5">
-      {/* Najpopularnije Section */}
-      <section id="most-popular"  ref={sectionRefs["most-popular"]} className="size-auto mb-12 scroll-mt-20">
-          <h1 className="text-4xl font-bold text-center mb-8">Najpopularnije</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sampleDrinks.map((mostPopularDrink) => (
-              <HomePageDrink
-                key={mostPopularDrink.id}
-                name={mostPopularDrink.name}
-                description={mostPopularDrink.description}
-                price={mostPopularDrink.price}
-              />
+      <p>
+        bar {decryptedData?.barId} - table {decryptedData?.tableId}
+      </p>
+      <h1 className="text-2xl font-bold">Bar Data</h1>
+      {data ? (
+        <div>
+          <h2>{data.name}</h2>
+          <p>Location: {data.location}</p>
+          <img src={data.image || ""} alt={data.name} />
+          <ul>
+            {data.articles.map((article, index) => (
+              <li key={index}>
+                <h3>{article.title}</h3>
+                <p>{article.content}</p>
+                <p>Price: ${article.price.toFixed(2)}</p>
+                {article.image && <img src={article.image} alt={article.title} className="w-[200px]" />}
+                <p>Status: {article.status}</p>
+              </li>
             ))}
-          </div>
-        </section>
-
-        {/* Topli Napitci Section */}
-        <section  id="hot-drink" ref={sectionRefs["hot-drink"]}  className="size-auto mb-12 scroll-mt-20">
-          <h1 className="text-4xl font-bold text-center mb-8">Topli Napitci</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sampleDrinks.map((hotDrink) => (
-              <HomePageDrink
-                key={hotDrink.id}
-                name={hotDrink.name}
-                description={hotDrink.description}
-                price={hotDrink.price}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Hladni Napitci Section */}
-        <section id="cold-drink" ref={sectionRefs["cold-drink"]} className="size-auto mb-12 scroll-mt-20">
-          <h1 className="text-4xl font-bold text-center mb-8">Hladni Napitci</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sampleDrinks.map((coldDrink) => (
-              <HomePageDrink
-                key={coldDrink.id}
-                name={coldDrink.name}
-                description={coldDrink.description}
-                price={coldDrink.price}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Alkoholna Pica Section */}
-        <section  id="alcoholic" ref={sectionRefs["alcoholic"]} className="size-auto mb-12 scroll-mt-20">
-          <h1 className="text-4xl font-bold text-center mb-8">Alkoholna Pica</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sampleDrinks.map((alcoholicDrink) => (
-              <HomePageDrink
-                key={alcoholicDrink.id}
-                name={alcoholicDrink.name}
-                description={alcoholicDrink.description}
-                price={alcoholicDrink.price} //odi dodat da se salje valjda i slika(i u HomePageDrink da se prima sliku)
-              />
-            ))}
-          </div>
-        </section>
-     </main>
-
-     <HomePageFooter />
-    </div>  
+          </ul>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
   );
 }
-// malo uredi dizajnerski da lipse izgleda(nac neku paletu boja i toga se drzat)
-//triba ustimat ovaj scroll da navbar ne oznaci nadolzeci section pre brzo(vecinski problem kad scrollas od dolje prema gore)
-//sredi za ove prijelaze malo velcinu fonta i sredi ovaj singlepage product
