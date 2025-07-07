@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import crypto from "crypto";
 import { useBarData } from "@/queries/hooks/useGetBarData";
+import Header from "@/features/pages/home/header";
+import Article from "@/features/pages/home/article";
 
 export default function Home() {
   const [decryptedData, setDecryptedData] = useState<{
@@ -16,8 +18,6 @@ export default function Home() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const encryptedData = urlParams.get("site");
-
-    console.log(encryptedData);
 
     if (encryptedData) {
       const data = decryptData(encryptedData);
@@ -51,34 +51,37 @@ export default function Home() {
 
   const { data } = useBarData(decryptedData?.barId || 1);
 
-  console.log(data);
+  const groupedArticles = data?.articles.reduce(
+    (acc: Record<string, typeof data.articles>, article) => {
+      const category = article.category || "Uncategorized";
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(article);
+      return acc;
+    },
+    {}
+  );
+  const categories = Object.keys(groupedArticles || {}).map((category) => ({
+    label: category,
+    value: category.toLowerCase().replace(/\s+/g, "-"),
+  }));
 
   return (
-    <div className="mx-auto w-full max-w-[1440px]">
-      <p>
-        bar {decryptedData?.barId} - table {decryptedData?.tableId}
-      </p>
-      <h1 className="text-2xl font-bold">Bar Data</h1>
-      {data ? (
-        <div>
-          <h2>{data.name}</h2>
-          <p>Location: {data.location}</p>
-          <img src={data.image || ""} alt={data.name} />
-          <ul>
-            {data.articles.map((article, index) => (
-              <li key={index}>
-                <h3>{article.title}</h3>
-                <p>{article.content}</p>
-                <p>Price: ${article.price.toFixed(2)}</p>
-                {article.image && <img src={article.image} alt={article.title} className="w-[200px]" />}
-                <p>Status: {article.status}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+    <div className="">
+      <Header bar={data} categories={categories} />
+      <div className="px-[10px]">
+        {Object.entries(groupedArticles || {}).map(([category, articles]) => (
+          <div key={category} className="mb-[30px]">
+            <h2 className="text-xl font-bold mb-[10px] mt-[20px]">
+              {category}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-[20px]">
+              {articles.map((article) => (
+                <Article article={article} key={article.id} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

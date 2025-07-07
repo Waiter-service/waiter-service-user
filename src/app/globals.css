@@ -1,33 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --brand-green: #335d58;
+  --brand-green-light: #66bab0;
+  --brand-grey: #2d2b32;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #121212; /* Tamna pozadina */
-  color: #f5f5f5; /* Svijetli tekst */
-  font-family: 'Segoe UI', sans-serif;
+  background-color: #0a090b;
+  color: #f5f5f5;
+  font-family: "Segoe UI", sans-serif;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

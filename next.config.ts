@@ -3,20 +3,6 @@ import { NextConfig } from 'next';
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'vvgpobmuptguzcfogfcj.supabase.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'jjfmpgcvfytnqutietqa.supabase.co',
-        port: '',
-        pathname: '/**',
-      },
-    ],
     domains: ["digital-waiter-service.s3.eu-north-1.amazonaws.com"],
   },
   webpack(config: {

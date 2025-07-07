@@ -5,8 +5,14 @@ const BarDataSchema = z.object({
   name: z.string(),
   image: z.string().nullable(),
   location: z.string().nullable(),
+  description: z.string().nullable(),
+  logo: z.string().nullable(),
+  openingTime: z.string().nullable(),
+  closingTime: z.string().nullable(),
   articles: z.array(
     z.object({
+      id: z.number(),
+      category: z.string().nullable(),
       title: z.string(),
       content: z.string(),
       price: z.number(),
