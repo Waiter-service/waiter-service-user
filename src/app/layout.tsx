@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/providers/react-query";
 import { CartProvider } from "@/providers/cart-provider";
+import DialogProvider from "@/providers/dialog/DialogProvider";
+import DialogSwitch from "@/features/dialogs/DialogSwitch";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +32,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <CartProvider>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <DialogProvider>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <DialogSwitch />
+          </DialogProvider>
         </CartProvider>
       </body>
     </html>

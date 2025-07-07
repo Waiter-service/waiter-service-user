@@ -41,7 +41,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
             article.id === action.payload.id
               ? {
                   ...article,
-                  quantity: article.quantity + action.payload.quantity,
+                  quantity: action.payload.quantity,
                 }
               : article
           ),
