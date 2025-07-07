@@ -14,9 +14,7 @@ import { CartSvg } from "@/assets/icons";
 import { cn } from "@/utils/misc/cn/cn";
 
 export default function Home() {
-  const orders = useOrders(1);
-
-  console.log(orders);
+  const order = useOrders(1);
 
   const { state } = useCart();
   const { open } = useDialogContext();
@@ -104,13 +102,12 @@ export default function Home() {
           Go to Cart
         </Button>
       )}
-      {orders.length > 0 && (
+      {order && (
         <div
           className={cn(
             "border-[2px] rounded-full w-fit fixed bottom-[10px] right-[10px]",
-            orders[0].status === "PENDING" &&
-              "border-[var(--brand-green-light)]",
-            orders[0].status === "COMPLETED" && "border-[var(--brand-green)]"
+            order.status === "PENDING" && "border-[var(--brand-green-light)]",
+            order.status === "COMPLETED" && "border-[var(--brand-green)]"
           )}
         >
           <Image
@@ -119,6 +116,7 @@ export default function Home() {
             width={36}
             height={36}
             className=" cursor-pointer bg-[var(--brand-green)] rounded-full p-[8px] border-[1px] border-black"
+            onClick={() => open("order-status")}
           />
         </div>
       )}
