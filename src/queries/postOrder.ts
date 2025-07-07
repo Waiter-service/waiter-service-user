@@ -12,6 +12,7 @@ const postOrderBodySchema = z.object({
   tableId: z.number(),
   total: z.number().min(0, "Total must be a positive number"),
   status: z.string(),
+  comment: z.string().optional().nullable(),
 });
 
 type UsePostOrderResponseSchema = {
@@ -21,6 +22,7 @@ type UsePostOrderResponseSchema = {
   status: string;
   date: string;
   total: number;
+  comment?: string | null;
 };
 
 export const postOrder = async (

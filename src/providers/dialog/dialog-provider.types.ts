@@ -1,5 +1,6 @@
 export const DIALOGS = [
-  'article'
+  'article',
+  'cart'
 ] as const;
 
 export type Dialog = (typeof DIALOGS)[number];

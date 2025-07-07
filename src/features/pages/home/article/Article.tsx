@@ -45,6 +45,7 @@ const Article: FC<ArticleProps> = ({ article }) => {
             event.stopPropagation();
             addToCart({
               ...article,
+              image: article.image ?? undefined,
               quantity: 1,
             });
           }}

@@ -31,12 +31,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CartProvider>
-          <DialogProvider>
-            <ReactQueryProvider>{children}</ReactQueryProvider>
-            <DialogSwitch />
-          </DialogProvider>
-        </CartProvider>
+        <ReactQueryProvider>
+          <CartProvider>
+            <DialogProvider>
+              {children}
+              <DialogSwitch />
+            </DialogProvider>
+          </CartProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

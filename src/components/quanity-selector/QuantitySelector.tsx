@@ -1,13 +1,16 @@
+import { cn } from "@/utils/misc/cn/cn";
 import React, { FC } from "react";
 
 interface QuantitySelectorProps {
   quantity: number;
   onChange: (quantity: number) => void;
+  classname?: string;
 }
 
 const QuantitySelector: FC<QuantitySelectorProps> = ({
   quantity = 1,
   onChange = () => {},
+    classname = "",
 }) => {
   const handleIncrease = () => {
     if (quantity < 5) {
@@ -22,7 +25,7 @@ const QuantitySelector: FC<QuantitySelectorProps> = ({
   };
 
   return (
-    <div className="flex items-center text-neutral-600 bg-white rounded-full cursor-pointer">
+    <div className={cn("flex items-center text-neutral-600 bg-white rounded-full cursor-pointer", classname)}>
       <p className="px-[10px] text-[10px] py-[10px]" onClick={handleDecrease}>
         -
       </p>

@@ -5,8 +5,21 @@ import crypto from "crypto";
 import { useBarData } from "@/queries/hooks/useGetBarData";
 import Header from "@/features/pages/home/header";
 import Article from "@/features/pages/home/article";
+import { useCart } from "@/providers/cart-provider";
+import Button from "@/components/button/Button";
+import { useDialogContext } from "@/providers/dialog/DialogProvider";
+import useOrders from "@/hooks/useOrder";
+import Image from "next/image";
+import { CartSvg } from "@/assets/icons";
+import { cn } from "@/utils/misc/cn/cn";
 
 export default function Home() {
+  const orders = useOrders(1);
+
+  console.log(orders);
+
+  const { state } = useCart();
+  const { open } = useDialogContext();
   const [decryptedData, setDecryptedData] = useState<{
     barId: number;
     tableId: number;
@@ -82,6 +95,33 @@ export default function Home() {
           </div>
         ))}
       </div>
+      {state.articles.length > 0 && (
+        <Button
+          variant="green"
+          className=" w-[90%] fixed bottom-[10px] left-[5%]"
+          onClick={() => open("cart")}
+        >
+          Go to Cart
+        </Button>
+      )}
+      {orders.length > 0 && (
+        <div
+          className={cn(
+            "border-[2px] rounded-full w-fit fixed bottom-[10px] right-[10px]",
+            orders[0].status === "PENDING" &&
+              "border-[var(--brand-green-light)]",
+            orders[0].status === "COMPLETED" && "border-[var(--brand-green)]"
+          )}
+        >
+          <Image
+            src={CartSvg}
+            alt="Cart Icon"
+            width={36}
+            height={36}
+            className=" cursor-pointer bg-[var(--brand-green)] rounded-full p-[8px] border-[1px] border-black"
+          />
+        </div>
+      )}
     </div>
   );
 }

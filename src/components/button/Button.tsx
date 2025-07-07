@@ -3,10 +3,11 @@ import React, { ButtonHTMLAttributes } from "react";
 
 export const ButtonType: { [key in ButtonVariant]: string } = {
   gray: "bg-neutral-700 rounded-full border-[1px] border-neutral-300",
-    green: "bg-[var(--brand-green)] text-white rounded-full text-[14px] px-[10px] py-[10px]  hover:bg-[var(--brand-green-light)]",
+  darkGray: "bg-neutral-800 rounded-full border-[1px] border-neutral-500",
+    green: "bg-[var(--brand-green)] text-white rounded-full text-[14px] px-[10px] py-[10px]  hover:bg-[var(--brand-green-light)]"
 };
 
-export type ButtonVariant = "gray" | "green";
+export type ButtonVariant = "gray" | "green" | "darkGray";
 
 export const ButtonSize: { [key in ButtonSize]: string } = {
   small: "px-[8px] py-[7.5px]",

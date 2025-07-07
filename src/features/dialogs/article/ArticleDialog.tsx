@@ -52,7 +52,10 @@ const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
           height={200}
           className="w-full max-h-[240px] md:h-[200px] object-cover"
         />
-        <Button variant="gray" className="absolute top-[15px] left-[15px] p-[7px]">
+        <Button
+          variant="gray"
+          className="absolute top-[15px] left-[15px] p-[7px]"
+        >
           <Image
             src={CloseSvg}
             alt="Close Icon"
@@ -88,6 +91,7 @@ const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
           onClick={() => {
             addToCart({
               ...data.article,
+              image: data.article.image ?? undefined,
               quantity,
             });
             close();

@@ -8,6 +8,10 @@ type Article = {
   title: string;
   price: number;
   quantity: number;
+  category?: string;
+  content?: string;
+  image?: string;
+  status?: string;
 };
 
 // Define the shape of the cart state
