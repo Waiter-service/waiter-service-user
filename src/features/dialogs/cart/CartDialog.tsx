@@ -91,6 +91,7 @@ const CartDialog = () => {
           onClick={() => {
             handleOrder();
           }}
+          disabled={state.articles.length === 0}
         >
           <p>
             <span className="bg-white  text-[var(--brand-green)] rounded-full px-[5px] py-[2px] mr-[10px]">

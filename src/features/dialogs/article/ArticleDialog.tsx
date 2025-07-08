@@ -26,7 +26,7 @@ interface ArticleDialogProps {
 }
 
 const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
-  const { addToCart, state } = useCart();
+  const { addToCart, state, removeFromCart } = useCart();
   const { close } = useDialogContext();
   const [quantity, setQuantity] = useState(1);
   const [isInCart, setIsInCart] = useState(false);
@@ -41,6 +41,19 @@ const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
       setIsInCart(false);
     }
   }, [state.articles, data.article.id]);
+
+  const handleArticleAction = () => {
+    if (quantity === 0) {
+      removeFromCart(data.article.id);
+    } else {
+      addToCart({
+        ...data.article,
+        image: data.article.image ?? undefined,
+        quantity,
+      });
+    }
+    close();
+  };
 
   return (
     <div className="md:max-w-[450px] md:h-fit w-full h-full bg-neutral-900 md:border-[1px] border-neutral-500 md:rounded-2xl md:p-[20px] flex flex-col justify-between">
@@ -65,9 +78,9 @@ const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
           />
         </Button>
         <div className="p-[20px]">
-          <p className="text-[22px] mt-[10px]">{data.article.title}</p>
-          <p className="text-[14px] ">{data.article.content}</p>
-          <div className="flex flex-col w-full border-y-[1px] border-neutral-600 gap-[10px] text-[12px] text-neutral-400 py-[10px] mt-[10px]">
+          <p className="text-[24px] mt-[10px]">{data.article.title}</p>
+          <p className="text-[18px] ">{data.article.content}</p>
+          <div className="flex flex-col w-full border-y-[1px] border-neutral-600 gap-[10px] text-[14px] text-neutral-400 py-[10px] mt-[10px]">
             <div className="flex items-center justify-between w-full">
               <p>Cijena bez PDV-a</p>
               <p>{data.article.price}€</p>
@@ -78,7 +91,7 @@ const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
             </div>
           </div>
           <div className="flex w-full justify-between items-center mt-[10px]">
-            <p className="text-[12px]">Cijena s PDV-om</p>
+            <p className="text-[14px]">Cijena s PDV-om</p>
             <p>{data.article.price}€</p>
           </div>
         </div>
@@ -88,16 +101,13 @@ const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
         <Button
           variant="green"
           className="w-[80%]"
-          onClick={() => {
-            addToCart({
-              ...data.article,
-              image: data.article.image ?? undefined,
-              quantity,
-            });
-            close();
-          }}
+          onClick={handleArticleAction}
         >
-          {isInCart ? "Ažuriraj narudžbu" : "Dodaj u narudžbu"}
+          {quantity === 0
+            ? "Ukloni iz narudžbe"
+            : isInCart
+            ? "Ažuriraj narudžbu"
+            : "Dodaj u narudžbu"}
         </Button>
       </div>
     </div>

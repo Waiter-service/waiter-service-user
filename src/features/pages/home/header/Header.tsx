@@ -127,6 +127,10 @@ const Header: FC<HeaderProps> = ({
               "text-neutral-300 md:w-fit md:opacity-100 md:ml-[7px] focus:outline-none focus:border-neutral-400 placeholder:text-neutral-300 transition-all duration-300 ease-in-out",
               isSearchOpen ? "w-[200px] opacity-100" : "w-0 opacity-0"
             )}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsSearchOpen(true);
+            }}
           />
         </div>
       </div>

@@ -17,9 +17,18 @@ interface CartArticleProps {
 }
 
 const CartArticle: FC<CartArticleProps> = ({ article }) => {
-  const { state, addToCart } = useCart();
+  const { state, addToCart, removeFromCart } = useCart();
   const [quantity, setQuantity] = useState(article.quantity || 1);
   console.log(state);
+
+  const handleQuantityChange = (newQuantity: number) => {
+    setQuantity(newQuantity);
+    if (newQuantity > 0) {
+      addToCart({ ...article, quantity: newQuantity });
+    } else {
+      removeFromCart(article.id);
+    }
+  };
 
   return (
     <div
@@ -33,13 +42,7 @@ const CartArticle: FC<CartArticleProps> = ({ article }) => {
           {article.price}€
         </p>
         <QuantitySelector
-          onChange={(value) => {
-            setQuantity(value);
-            addToCart({
-              ...article,
-              quantity: value,
-            });
-          }}
+          onChange={handleQuantityChange}
           quantity={quantity}
           classname=" scale-75 translate-y-[10px]"
         />

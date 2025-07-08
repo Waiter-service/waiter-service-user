@@ -14,7 +14,7 @@ import { CartSvg } from "@/assets/icons";
 import { cn } from "@/utils/misc/cn/cn";
 
 export default function Home() {
-  const order = useOrders(1);
+  const orders = useOrders(1);
 
   const { state } = useCart();
   const { open } = useDialogContext();
@@ -96,18 +96,22 @@ export default function Home() {
       {state.articles.length > 0 && (
         <Button
           variant="green"
-          className=" w-[90%] fixed bottom-[10px] left-[5%]"
+          className=" w-[75%] fixed bottom-[10px] left-[12.5%]"
           onClick={() => open("cart")}
         >
-          Go to Cart
+          {orders.length > 0 ? "Nadodaj u narudzbu" : "Naruci"}
         </Button>
       )}
-      {order && (
+      {orders.length > 0 && (
         <div
           className={cn(
             "border-[2px] rounded-full w-fit fixed bottom-[10px] right-[10px]",
-            order.status === "PENDING" && "border-[var(--brand-green-light)]",
-            order.status === "COMPLETED" && "border-[var(--brand-green)]"
+            orders.length > 0 &&
+              orders[orders.length - 1].status === "PENDING" &&
+              "border-[var(--brand-green-light)]",
+            orders.length > 0 &&
+              orders[orders.length - 1].status === "COMPLETED" &&
+              "border-[var(--brand-green)]"
           )}
         >
           <Image

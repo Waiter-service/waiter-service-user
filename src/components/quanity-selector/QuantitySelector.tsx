@@ -19,7 +19,7 @@ const QuantitySelector: FC<QuantitySelectorProps> = ({
   };
 
   const handleDecrease = () => {
-    if (quantity > 1) {
+    if (quantity > 0) {
       onChange(quantity - 1);
     }
   };

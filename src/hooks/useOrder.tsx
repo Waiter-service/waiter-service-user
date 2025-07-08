@@ -3,21 +3,23 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 
 // Update the schema to match the object structure returned by the API
-const ordersResponseSchema = z.object({
-  id: z.number(),
-  tableId: z.number(),
-  status: z.string(),
-  barId: z.number(),
-  comment: z.string(),
-  date: z.string(),
-  total: z.number(),
-  OrderArticle: z.array(
-    z.object({
-      articleId: z.number(),
-      quantity: z.number(),
-    })
-  ),
-});
+const ordersResponseSchema = z.array(
+  z.object({
+    id: z.number(),
+    tableId: z.number(),
+    status: z.string(),
+    barId: z.number(),
+    comment: z.string().nullable(),
+    date: z.string(),
+    total: z.number(),
+    OrderArticle: z.array(
+      z.object({
+        articleId: z.number(),
+        quantity: z.number(),
+      })
+    ),
+  })
+);
 
 const useOrders = (tableId: number) => {
   const [orders, setOrders] = useState<{
@@ -25,14 +27,14 @@ const useOrders = (tableId: number) => {
     tableId: number;
     status: string;
     barId: number;
-    comment: string;
+    comment: string | null;
     date: string;
     total: number;
     OrderArticle: {
       articleId: number;
       quantity: number;
     }[];
-  } | null>(null); // Initialize state as null
+  }[] | []>([]);
 
   useEffect(() => {
     connectSocket();
@@ -52,7 +54,7 @@ const useOrders = (tableId: number) => {
       () => {
         fetchOrders();
       },
-      orders === null ? 1 : 10000 // Adjust interval based on whether orders are null
+      orders.length === 0 ? 1 : 10000 // Adjust interval based on whether orders are empty
     );
 
     return () => clearInterval(interval);
