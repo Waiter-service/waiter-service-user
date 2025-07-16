@@ -42,7 +42,7 @@ const useOrders = (tableId: number) => {
     const fetchOrders = () => {
       getOrdersByTableId(tableId, (response) => {
         try {
-          const validatedOrders = ordersResponseSchema.parse(response); // Validate the object
+          const validatedOrders = ordersResponseSchema.parse(response); 
           setOrders(validatedOrders);
         } catch (error) {
           console.error("Invalid orders response:", error);
@@ -54,7 +54,7 @@ const useOrders = (tableId: number) => {
       () => {
         fetchOrders();
       },
-      orders.length === 0 ? 1 : 10000 // Adjust interval based on whether orders are empty
+      orders.length === 0 ? 1 : 10000 
     );
 
     return () => clearInterval(interval);
