@@ -10,6 +10,8 @@ import Button from "@/components/button/Button";
 import ButtonGroup from "@/components/button-group";
 import SearchBar from "@/components/search-bar";
 import { useTable } from "@/providers/table-provider";
+import Link from "next/link";
+import { useDialogContext } from "@/providers/dialog/DialogProvider";
 
 interface HeaderProps {
   bar?: {
@@ -32,6 +34,7 @@ const Header: FC<HeaderProps> = ({
     name: barName = "Bar Name",
     logo: barLogo = "/default-logo.png",
     image: barBackgroundImage = "/default-logo.png",
+    description,
     location = "Unknown Location",
     openingTime = "09:00",
     closingTime = "23:00",
@@ -47,8 +50,9 @@ const Header: FC<HeaderProps> = ({
     categories?.[0]?.value || "all"
   );
   const { setSelectedCategoryData } = useTable();
+  const { open } = useDialogContext();
 
-  const handleCategoryChange = (option: string ) => {
+  const handleCategoryChange = (option: string) => {
     setSelectedCategory(option);
     setSelectedCategoryData(option);
   };
@@ -64,11 +68,11 @@ const Header: FC<HeaderProps> = ({
           className="w-full h-[170px] md:h-[270px] object-cover"
         />
         <div className="w-full absolute flex flex-col items-center justify-between md:block h-full top-0 left-0 px-[20px]">
-          <div className="flex justify-between items-center mt-[16px] w-full">
-            <Button variant="gray" className="p-[4px]">
+          <div className="flex justify-end items-center mt-[16px] w-full">
+            <Button variant="gray" className="p-[4px] hidden">
               <Image src={GlobeSvg} alt="Globe Icon" width={20} height={20} />
             </Button>
-            <Button variant="gray" className="p-[4px]">
+            <Button variant="gray" className="p-[4px]" onClick={() => open('about', { name: barName, logo: barLogo, description, location, openingTime, closingTime })}>
               <Image
                 src={DotVerticalFilledSvg}
                 alt="Globe Icon"
