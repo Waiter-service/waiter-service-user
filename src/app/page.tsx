@@ -13,15 +13,16 @@ import { CartSvg } from "@/assets/icons";
 import { cn } from "@/utils/misc/cn/cn";
 import { decryptData } from "@/utils/misc/crypto";
 import { useTable } from "@/providers/table-provider";
-import { useRouter } from "next/navigation";
 import ErrorPage from "@/features/pages/error/page";
 
 export default function Home() {
   const { state } = useCart();
   const { open } = useDialogContext();
-  const { setTableData, tableData } = useTable();
+  const { setTableData, tableData, selectedCategoryData, searchArticleData } =
+    useTable();
   const orders = useOrders(tableData?.tableId || 0);
-  const router = useRouter();
+
+  console.log(searchArticleData);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -30,7 +31,6 @@ export default function Home() {
     if (encryptedData) {
       try {
         const data = decryptData(encryptedData);
-        console.log("Decrypted Data:", data.barId, data.tableId);
         setTableData(data);
       } catch (error) {
         console.error("Failed to decrypt data:", error);
@@ -49,6 +49,18 @@ export default function Home() {
     },
     {}
   );
+
+  const filteredArticles =
+    searchArticleData.length > 2 &&
+    data?.articles.filter((article) => {
+      if (searchArticleData) {
+        return article.title
+          .toLowerCase()
+          .includes(searchArticleData.toLowerCase());
+      }
+      return true;
+    });
+
   const categories = Object.keys(groupedArticles || {}).map((category) => ({
     label: category,
     value: category.toLowerCase().replace(/\s+/g, "-"),
@@ -57,9 +69,18 @@ export default function Home() {
   return tableData ? (
     <div className="">
       <Header bar={data} categories={categories} />
-      <div className="px-[10px]">
+      <div className={cn("px-[10px]", filteredArticles && "hidden")}>
         {Object.entries(groupedArticles || {}).map(([category, articles]) => (
-          <div key={category} className="mb-[30px]">
+          <div
+            key={category}
+            className={cn(
+              "mb-[30px]",
+              selectedCategoryData !== null &&
+                selectedCategoryData !== "" &&
+                selectedCategoryData !== category.toLocaleLowerCase() &&
+                "hidden"
+            )}
+          >
             <h2 className="text-xl font-bold mb-[10px] mt-[20px]">
               {category}
             </h2>
@@ -71,6 +92,18 @@ export default function Home() {
           </div>
         ))}
       </div>
+      {filteredArticles && (
+        <div className=" relative grid grid-cols-1 md:grid-cols-2 w-full gap-[20px] px-[10px] mt-[20px]">
+          {filteredArticles.map((article) => (
+            <Article article={article} key={article.id} />
+          ))}
+          {filteredArticles.length === 0 && (
+            <p className="text-center text-neutral-200 mt-[32px] absolute top-0 w-full">
+              Nema rezultata za "{searchArticleData}"
+            </p>
+          )}
+        </div>
+      )}
       {state.articles.length > 0 && (
         <Button
           variant="green"

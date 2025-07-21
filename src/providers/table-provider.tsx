@@ -5,6 +5,10 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 interface TableContextType {
   tableData: { tableId: number; barId: number } | null;
   setTableData: (data: { tableId: number; barId: number }) => void;
+  selectedCategoryData: string | null;
+  setSelectedCategoryData: (category: string | null) => void;
+  searchArticleData: string;
+  setSearchArticle: (search: string) => void;
 }
 
 const TableContext = createContext<TableContextType | undefined>(undefined);
@@ -17,12 +21,34 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({
     barId: number;
   } | null>(null);
 
+  const [selectedCategoryData, setSelectedCategoryDataState] = useState<
+    string | null
+  >(null);
+  const [searchArticleData, setSearchArticleState] = useState<string>("");
+
+  const setSelectedCategoryData = (category: string | null) => {
+    setSelectedCategoryDataState(category);
+  };
+
+  const setSearchArticle = (search: string) => {
+    setSearchArticleState(search);
+  };
+
   const setTableData = (data: { tableId: number; barId: number }) => {
     setTableDataState(data);
   };
 
   return (
-    <TableContext.Provider value={{ tableData, setTableData }}>
+    <TableContext.Provider
+      value={{
+        tableData,
+        setTableData,
+        selectedCategoryData,
+        setSelectedCategoryData,
+        searchArticleData,
+        setSearchArticle,
+      }}
+    >
       {children}
     </TableContext.Provider>
   );

@@ -9,6 +9,7 @@ import {
 import Button from "@/components/button/Button";
 import ButtonGroup from "@/components/button-group";
 import SearchBar from "@/components/search-bar";
+import { useTable } from "@/providers/table-provider";
 
 interface HeaderProps {
   bar?: {
@@ -45,6 +46,12 @@ const Header: FC<HeaderProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>(
     categories?.[0]?.value || "all"
   );
+  const { setSelectedCategoryData } = useTable();
+
+  const handleCategoryChange = (option: string ) => {
+    setSelectedCategory(option);
+    setSelectedCategoryData(option);
+  };
 
   return (
     <div>
@@ -110,7 +117,7 @@ const Header: FC<HeaderProps> = ({
         <ButtonGroup
           options={categories}
           value={selectedCategory}
-          onChange={(option) => setSelectedCategory(option || "")}
+          onChange={(option) => handleCategoryChange(option || "")}
           className="w-[80%] md:w-auto overflow-scroll hide-scrollbar"
         />
         <SearchBar />

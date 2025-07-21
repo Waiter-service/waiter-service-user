@@ -8,12 +8,12 @@ const ErrorPage = () => {
         <Image
           src={LocationErrorPng}
           alt="Error Icon"
-          className="mx-auto"
+          className="mx-auto w-[200px] md:w-[300px]"
         />
-        <h1 className="text-[28px] font-[700]">
+        <h1 className="text-[20px] md:text-[28px] font-[700]">
           Ups! Ne nalazite se na lokaciji
         </h1>
-        <p className="text-[24px]">
+        <p className="md:text-[24px]">
           Izgleda da se ne nalazite na mjestu s kojeg pokusavate naruciti.
         </p>
       </div>

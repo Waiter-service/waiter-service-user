@@ -1,8 +1,4 @@
 import { FC, useState } from "react";
-
-import Image from "next/image";
-
-import { PlusSvg } from "@/assets/icons";
 import { useCart } from "@/providers/cart-provider";
 import QuantitySelector from "@/components/quanity-selector";
 

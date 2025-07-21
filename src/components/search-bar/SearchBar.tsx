@@ -3,12 +3,15 @@ import Image from "next/image";
 
 import { cn } from "@/utils/misc/cn/cn";
 import { FC, useState, useEffect, useRef } from "react";
+import { useTable } from "@/providers/table-provider";
 
 interface SearchBarProps {}
 
 const SearchBar: FC<SearchBarProps> = ({}) => {
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const searchBarRef = useRef<HTMLDivElement>(null);
+  const { setSearchArticle } = useTable();
+  const [searchInput, setSearchInput] = useState<string>("");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -17,6 +20,8 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
         !searchBarRef.current.contains(event.target as Node)
       ) {
         setIsSearchOpen(false);
+        setSearchInput("");
+        setSearchArticle("");
       }
     };
 
@@ -26,6 +31,13 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
     };
   }, []);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setSearchArticle(searchInput);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [searchInput]);
   return (
     <div
       ref={searchBarRef}
@@ -36,6 +48,8 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
       <input
         type="text"
         placeholder="Pretrazi"
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
         className={cn(
           "text-neutral-300 md:w-fit md:opacity-100 md:ml-[7px] focus:outline-none focus:border-neutral-400 placeholder:text-neutral-300 transition-all duration-300 ease-in-out",
           isSearchOpen ? "w-[90vw] opacity-100" : "w-0 opacity-0"
