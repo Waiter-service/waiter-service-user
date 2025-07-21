@@ -3,13 +3,12 @@ import Image from "next/image";
 import {
   GlobeSvg,
   DotVerticalFilledSvg,
-  SearchSvg,
   ClockSvg,
   HouseSvg,
 } from "@/assets/icons";
 import Button from "@/components/button/Button";
 import ButtonGroup from "@/components/button-group";
-import { cn } from "@/utils/misc/cn/cn";
+import SearchBar from "@/components/search-bar";
 
 interface HeaderProps {
   bar?: {
@@ -46,7 +45,6 @@ const Header: FC<HeaderProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>(
     categories?.[0]?.value || "all"
   );
-  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
 
   return (
     <div>
@@ -115,24 +113,7 @@ const Header: FC<HeaderProps> = ({
           onChange={(option) => setSelectedCategory(option || "")}
           className="w-[80%] md:w-auto overflow-scroll hide-scrollbar"
         />
-        <div
-          className="absolute top-0 right-0 md:relative flex flex-row-reverse md:flex-row items-center mx-[10px] bg-neutral-800 px-[5px] border-[1px] border-neutral-500 py-[4px] rounded-2xl group focus-within:bg-neutral-700 transition-all duration-300 ease-in-out"
-          onClick={() => setIsSearchOpen(!isSearchOpen)}
-        >
-          <Image src={SearchSvg} alt="Search Icon" width={20} height={20} />
-          <input
-            type="text"
-            placeholder="Pretrazi"
-            className={cn(
-              "text-neutral-300 md:w-fit md:opacity-100 md:ml-[7px] focus:outline-none focus:border-neutral-400 placeholder:text-neutral-300 transition-all duration-300 ease-in-out",
-              isSearchOpen ? "w-[90vw] opacity-100" : "w-0 opacity-0"
-            )}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsSearchOpen(true);
-            }}
-          />
-        </div>
+        <SearchBar />
       </div>
     </div>
   );

@@ -12,19 +12,16 @@ import useOrders from "@/hooks/useOrder";
 import Image from "next/image";
 import { CartSvg } from "@/assets/icons";
 import { cn } from "@/utils/misc/cn/cn";
+import { decryptData } from "@/utils/misc/crypto";
 
 export default function Home() {
-  const orders = useOrders(1);
-
   const { state } = useCart();
   const { open } = useDialogContext();
   const [decryptedData, setDecryptedData] = useState<{
     barId: number;
     tableId: number;
   } | null>(null);
-
-  const secretKey =
-    "5fbaef53eab424a62739b5935543a1522fddf462e00b59791aede33535886a5c";
+  const orders = useOrders(decryptedData?.tableId || 1);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -37,30 +34,11 @@ export default function Home() {
     }
   }, []);
 
-  function decryptData(encryptedData: string): {
-    barId: number;
-    tableId: number;
-  } {
-    const [ivHex, encryptedHex] = encryptedData.split(":");
-    const iv = Buffer.from(ivHex, "hex");
-    const encrypted = Buffer.from(encryptedHex, "hex");
-
-    const decipher = crypto.createDecipheriv(
-      "aes-256-cbc",
-      Buffer.from(secretKey, "hex"),
-      iv
-    );
-    let decrypted = decipher.update(encrypted);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-
-    return JSON.parse(decrypted.toString("utf8"));
-  }
-
   if (decryptedData) {
     console.log("Decrypted Data:", decryptedData.barId, decryptedData.tableId);
   }
 
-  const { data } = useBarData(decryptedData?.barId || 1);
+  const { data } = useBarData(decryptedData?.barId || 2);
 
   const groupedArticles = data?.articles.reduce(
     (acc: Record<string, typeof data.articles>, article) => {

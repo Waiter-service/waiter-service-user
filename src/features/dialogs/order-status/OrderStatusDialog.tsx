@@ -8,7 +8,7 @@ import Image from "next/image";
 
 const OrderStatusDialog = () => {
   const orders = useOrders(1);
-  const { data: barData } = useBarData(1);
+  const { data: barData } = useBarData(2);
   const { close } = useDialogContext();
 
   const orderArticlesMetadata = barData?.articles

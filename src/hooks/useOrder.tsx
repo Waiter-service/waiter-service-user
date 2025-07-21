@@ -1,8 +1,7 @@
 import { connectSocket, getOrdersByTableId } from "@/utils/socket/socket";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { z } from "zod";
 
-// Update the schema to match the object structure returned by the API
 const ordersResponseSchema = z.array(
   z.object({
     id: z.number(),
@@ -36,13 +35,15 @@ const useOrders = (tableId: number) => {
     }[];
   }[] | []>([]);
 
+  const isInitialFetch = useRef(true); 
+
   useEffect(() => {
     connectSocket();
 
     const fetchOrders = () => {
       getOrdersByTableId(tableId, (response) => {
         try {
-          const validatedOrders = ordersResponseSchema.parse(response); 
+          const validatedOrders = ordersResponseSchema.parse(response);
           setOrders(validatedOrders);
         } catch (error) {
           console.error("Invalid orders response:", error);
@@ -50,15 +51,20 @@ const useOrders = (tableId: number) => {
       });
     };
 
-    const interval = setInterval(
-      () => {
-        fetchOrders();
-      },
-      orders.length === 0 ? 1 : 10000 
-    );
+    const interval = setInterval(() => {
+      fetchOrders();
+
+      if (isInitialFetch.current) {
+        isInitialFetch.current = false;
+        clearInterval(interval);
+        setTimeout(() => {
+          setInterval(fetchOrders, 6000); 
+        }, 0);
+      }
+    }, isInitialFetch.current ? 1 : 6000); 
 
     return () => clearInterval(interval);
-  }, [orders, tableId]);
+  }, [tableId]);
 
   return orders;
 };

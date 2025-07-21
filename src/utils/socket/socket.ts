@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
 
-const socket: Socket = io("http://localhost:3000"); // Replace with your server URL
+const socket: Socket = io(process.env.NEXT_PUBLIC_WEB_SOCKET_URL); 
 
 /**
  * Function to emit an event to get orders by tableId

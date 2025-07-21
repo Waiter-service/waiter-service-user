@@ -26,7 +26,7 @@ const CartDialog = () => {
       })),
       total: totalPrice,
       tableId: 1,
-      barId: 1,
+      barId: 2,
       status: "PENDING",
       comment: comment || null,
     };
