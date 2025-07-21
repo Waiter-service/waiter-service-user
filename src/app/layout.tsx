@@ -5,6 +5,7 @@ import ReactQueryProvider from "@/providers/react-query";
 import { CartProvider } from "@/providers/cart-provider";
 import DialogProvider from "@/providers/dialog/DialogProvider";
 import DialogSwitch from "@/features/dialogs/DialogSwitch";
+import { TableProvider } from "@/providers/table-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,12 +33,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReactQueryProvider>
-          <CartProvider>
-            <DialogProvider>
-              {children}
-              <DialogSwitch />
-            </DialogProvider>
-          </CartProvider>
+          <TableProvider>
+            <CartProvider>
+              <DialogProvider>
+                {children}
+                <DialogSwitch />
+              </DialogProvider>
+            </CartProvider>
+          </TableProvider>
         </ReactQueryProvider>
       </body>
     </html>

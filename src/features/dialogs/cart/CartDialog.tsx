@@ -45,7 +45,7 @@ const CartDialog = () => {
   };
 
   return (
-    <div className="w-full h-full bg-neutral-900 px-[10px]">
+    <div className="w-full h-full bg-neutral-900 px-[10px] overflow-scroll">
       <div className="max-w-[1440px] ml-auto mr-auto">
         <div className="w-full flex justify-between items-center py-[30px]">
           <Button
@@ -84,7 +84,7 @@ const CartDialog = () => {
           onChange={(e) => setComment(e.target.value)}
         ></textarea>
       </div>
-      <div className="fixed bottom-[10px] w-full flex justify-center">
+      <div className="mt-[20px] pb-[50px] w-full flex justify-center">
         <Button
           variant="green"
           className=" w-[80%] md:max-w-[30%] "

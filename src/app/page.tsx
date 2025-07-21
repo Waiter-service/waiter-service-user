@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import crypto from "crypto";
+import { useEffect } from "react";
 import { useBarData } from "@/queries/hooks/useGetBarData";
 import Header from "@/features/pages/home/header";
 import Article from "@/features/pages/home/article";
@@ -13,33 +12,33 @@ import Image from "next/image";
 import { CartSvg } from "@/assets/icons";
 import { cn } from "@/utils/misc/cn/cn";
 import { decryptData } from "@/utils/misc/crypto";
+import { useTable } from "@/providers/table-provider";
+import { useRouter } from "next/navigation";
+import ErrorPage from "@/features/pages/error/page";
 
 export default function Home() {
-  console.log('aa');
   const { state } = useCart();
   const { open } = useDialogContext();
-  const [decryptedData, setDecryptedData] = useState<{
-    barId: number;
-    tableId: number;
-  } | null>(null);
-  const orders = useOrders(decryptedData?.tableId || 1);
+  const { setTableData, tableData } = useTable();
+  const orders = useOrders(tableData?.tableId || 0);
+  const router = useRouter();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const encryptedData = urlParams.get("site");
 
     if (encryptedData) {
-      const data = decryptData(encryptedData);
-      console.log("Decrypted Data:", data.barId, data.tableId);
-      setDecryptedData(data);
+      try {
+        const data = decryptData(encryptedData);
+        console.log("Decrypted Data:", data.barId, data.tableId);
+        setTableData(data);
+      } catch (error) {
+        console.error("Failed to decrypt data:", error);
+      }
     }
   }, []);
 
-  if (decryptedData) {
-    console.log("Decrypted Data:", decryptedData.barId, decryptedData.tableId);
-  }
-
-  const { data } = useBarData(decryptedData?.barId || 2);
+  const { data } = useBarData(tableData?.barId || 0);
 
   const groupedArticles = data?.articles.reduce(
     (acc: Record<string, typeof data.articles>, article) => {
@@ -55,7 +54,7 @@ export default function Home() {
     value: category.toLowerCase().replace(/\s+/g, "-"),
   }));
 
-  return (
+  return tableData ? (
     <div className="">
       <Header bar={data} categories={categories} />
       <div className="px-[10px]">
@@ -104,5 +103,7 @@ export default function Home() {
         </div>
       )}
     </div>
+  ) : (
+    <ErrorPage />
   );
 }

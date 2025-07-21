@@ -2,13 +2,15 @@ import { ArrowLeftSvg, CartSvg } from "@/assets/icons";
 import Button from "@/components/button/Button";
 import useOrders from "@/hooks/useOrder";
 import { useDialogContext } from "@/providers/dialog/DialogProvider";
+import { useTable } from "@/providers/table-provider";
 import { useBarData } from "@/queries/hooks/useGetBarData";
 import { cn } from "@/utils/misc/cn/cn";
 import Image from "next/image";
 
 const OrderStatusDialog = () => {
-  const orders = useOrders(1);
-  const { data: barData } = useBarData(2);
+  const { tableData } = useTable();
+  const orders = useOrders(tableData?.tableId || 0);
+  const { data: barData } = useBarData(tableData?.barId || 0);
   const { close } = useDialogContext();
 
   const orderArticlesMetadata = barData?.articles
@@ -34,7 +36,7 @@ const OrderStatusDialog = () => {
   }, 0);
 
   return (
-    <div className="w-full h-full bg-neutral-900">
+    <div className="w-full h-full bg-neutral-900 overflow-scroll">
       <div className="max-w-[1440px] ml-auto mr-auto">
         <Button
           variant="darkGray"

@@ -57,7 +57,7 @@ const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
 
   return (
     <div className="md:max-w-[450px] md:h-fit w-full h-full bg-neutral-900 md:border-[1px] border-neutral-500 md:rounded-2xl md:p-[20px] flex flex-col justify-between">
-      <div>
+      <div className="relative">
         <Image
           src={data.article.image || "/placeholder.png"}
           alt={data.article.title}

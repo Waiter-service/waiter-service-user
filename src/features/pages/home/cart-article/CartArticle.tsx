@@ -19,7 +19,6 @@ interface CartArticleProps {
 const CartArticle: FC<CartArticleProps> = ({ article }) => {
   const { state, addToCart, removeFromCart } = useCart();
   const [quantity, setQuantity] = useState(article.quantity || 1);
-  console.log(state);
 
   const handleQuantityChange = (newQuantity: number) => {
     setQuantity(newQuantity);
