@@ -22,8 +22,6 @@ export default function Home() {
     useTable();
   const orders = useOrders(tableData?.tableId || 0);
 
-  console.log(searchArticleData);
-
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const encryptedData = urlParams.get("site");
