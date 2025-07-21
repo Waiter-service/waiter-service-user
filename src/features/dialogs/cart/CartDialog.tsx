@@ -6,6 +6,7 @@ import { useDialogContext } from "@/providers/dialog/DialogProvider";
 import { usePostOrder } from "@/queries/hooks/usePostOrder";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const CartDialog = () => {
   const { state, clearCart } = useCart();
@@ -33,13 +34,8 @@ const CartDialog = () => {
 
     mutate(orderDetails, {
       onSuccess: () => {
-        alert("Order placed successfully!");
         clearCart();
         close();
-      },
-      onError: (error) => {
-        console.error("Error placing order:", error);
-        alert("Failed to place order. Please try again.");
       },
     });
   };

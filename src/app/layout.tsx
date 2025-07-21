@@ -6,6 +6,7 @@ import { CartProvider } from "@/providers/cart-provider";
 import DialogProvider from "@/providers/dialog/DialogProvider";
 import DialogSwitch from "@/features/dialogs/DialogSwitch";
 import { TableProvider } from "@/providers/table-provider";
+import { ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
             <CartProvider>
               <DialogProvider>
                 {children}
+                <ToastContainer />
                 <DialogSwitch />
               </DialogProvider>
             </CartProvider>
