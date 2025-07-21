@@ -15,6 +15,7 @@ import { cn } from "@/utils/misc/cn/cn";
 import { decryptData } from "@/utils/misc/crypto";
 
 export default function Home() {
+  console.log('aa');
   const { state } = useCart();
   const { open } = useDialogContext();
   const [decryptedData, setDecryptedData] = useState<{
