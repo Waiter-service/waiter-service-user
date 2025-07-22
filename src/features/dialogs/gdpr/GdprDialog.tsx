@@ -1,15 +1,19 @@
 import { useDialogContext } from "@/providers/dialog/DialogProvider";
+import { useTable } from "@/providers/table-provider";
 
 const GDPRDialog = () => {
   const { close } = useDialogContext();
+  const { setGdprAccepted } = useTable();
 
   const onDecline = () => {
     localStorage.setItem("gdprAccepted", "false");
+    setGdprAccepted(false);
     close();
   };
 
   const onAccept = () => {
     localStorage.setItem("gdprAccepted", "true");
+    setGdprAccepted(true);
     close();
   };
 

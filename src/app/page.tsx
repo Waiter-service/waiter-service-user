@@ -18,8 +18,13 @@ import ErrorPage from "@/features/pages/error/page";
 export default function Home() {
   const { state } = useCart();
   const { open } = useDialogContext();
-  const { setTableData, tableData, selectedCategoryData, searchArticleData } =
-    useTable();
+  const {
+    setTableData,
+    tableData,
+    selectedCategoryData,
+    searchArticleData,
+    gdprAcceptedState,
+  } = useTable();
   const orders = useOrders(tableData?.tableId || 0);
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -47,10 +52,8 @@ export default function Home() {
     }
   }, [data, open]);
 
-  const gdprAccepted = localStorage.getItem("gdprAccepted");
-
   useEffect(() => {
-    if (gdprAccepted === "true") {
+    if (gdprAcceptedState) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -61,7 +64,7 @@ export default function Home() {
         }
       );
     }
-  }, [gdprAccepted]);
+  }, [gdprAcceptedState]);
 
   const isUserInBarRange = (
     barLocation: {
@@ -117,7 +120,7 @@ export default function Home() {
     value: category.toLowerCase().replace(/\s+/g, "-"),
   }));
 
-  if (!tableData || gdprAccepted === "false" || !isUserInBarRangeP) {
+  if (!tableData || !gdprAcceptedState || !isUserInBarRangeP) {
     return <ErrorPage />;
   }
 

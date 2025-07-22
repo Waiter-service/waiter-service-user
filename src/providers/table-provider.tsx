@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 interface TableContextType {
   tableData: { tableId: number; barId: number } | null;
@@ -9,6 +15,8 @@ interface TableContextType {
   setSelectedCategoryData: (category: string | null) => void;
   searchArticleData: string;
   setSearchArticle: (search: string) => void;
+  setGdprAccepted: (accepted: boolean) => void;
+  gdprAcceptedState: boolean;
 }
 
 const TableContext = createContext<TableContextType | undefined>(undefined);
@@ -26,6 +34,15 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({
   >(null);
   const [searchArticleData, setSearchArticleState] = useState<string>("");
 
+  const [gdprAcceptedState, setGdprAcceptedState] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const gdprStatus = localStorage.getItem("gdprAccepted") === "true";
+      setGdprAcceptedState(gdprStatus);
+    }
+  }, []);
+
   const setSelectedCategoryData = (category: string | null) => {
     setSelectedCategoryDataState(category);
   };
@@ -38,6 +55,10 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({
     setTableDataState(data);
   };
 
+  const setGdprAccepted = (accepted: boolean) => {
+    setGdprAcceptedState(accepted);
+  };
+
   return (
     <TableContext.Provider
       value={{
@@ -47,6 +68,8 @@ export const TableProvider: React.FC<{ children: ReactNode }> = ({
         setSelectedCategoryData,
         searchArticleData,
         setSearchArticle,
+        gdprAcceptedState,
+        setGdprAccepted,
       }}
     >
       {children}
