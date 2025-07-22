@@ -9,6 +9,7 @@ import ArticleDialog, {
 import CartDialog from "./cart/CartDialog";
 import OrderStatusDialog from "./order-status/OrderStatusDialog";
 import AboutDialog, { aboutDialogDataSchema } from "./about/AboutDialog";
+import GDPRDialog from "./gdpr/GdprDialog";
 
 const DialogSwitch = () => {
   const { type, data, close } = useDialogContext();
@@ -25,7 +26,9 @@ const DialogSwitch = () => {
       case "order-status":
         return <OrderStatusDialog />;
       case "about":
-        return <AboutDialog data={aboutDialogDataSchema.parse(data)}/>;
+        return <AboutDialog data={aboutDialogDataSchema.parse(data)} />;
+      case "gdpr":
+        return <GDPRDialog />;
       case null:
         return;
       default:

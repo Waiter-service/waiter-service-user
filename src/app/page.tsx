@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { use, useEffect, useState } from "react";
 import { useBarData } from "@/queries/hooks/useGetBarData";
 import Header from "@/features/pages/home/header";
 import Article from "@/features/pages/home/article";
@@ -36,6 +36,60 @@ export default function Home() {
   }, []);
 
   const { data } = useBarData(tableData?.barId || 0);
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!localStorage.getItem("gdprAccepted")) {
+      open("gdpr");
+    }
+  }, [data, open]);
+
+  const gdprAccepted = localStorage.getItem("gdprAccepted");
+
+  useEffect(() => {
+    if (gdprAccepted === "true") {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+        }
+      );
+    }
+  }, [gdprAccepted]);
+
+  const isUserInBarRange = (
+    barLocation: {
+      latitude: number;
+      longitude: number;
+    },
+    location: { latitude: number; longitude: number } | null
+  ) => {
+    if (!location) return false;
+
+    const distance = Math.sqrt(
+      Math.pow(location.latitude - barLocation.latitude, 2) +
+        Math.pow(location.longitude - barLocation.longitude, 2)
+    );
+
+    return distance <= 0.01;
+  };
+
+  const isBarLocationValid = data?.location && location;
+  const isUserInBarRangeP = isBarLocationValid
+    ? isUserInBarRange(
+        {
+          latitude: data.coordinateY || 0,
+          longitude: data.coordinateX || 0,
+        },
+        location
+      )
+    : false;
 
   const groupedArticles = data?.articles.reduce(
     (acc: Record<string, typeof data.articles>, article) => {
@@ -63,7 +117,11 @@ export default function Home() {
     value: category.toLowerCase().replace(/\s+/g, "-"),
   }));
 
-  return tableData ? (
+  if (!tableData || gdprAccepted === "false" || !isUserInBarRangeP) {
+    return <ErrorPage />;
+  }
+
+  return (
     <div className="">
       <Header bar={data} categories={categories} />
       <div className={cn("px-[10px]", filteredArticles && "hidden")}>
@@ -133,7 +191,5 @@ export default function Home() {
         </div>
       )}
     </div>
-  ) : (
-    <ErrorPage />
   );
 }

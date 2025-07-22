@@ -9,6 +9,8 @@ const BarDataSchema = z.object({
   logo: z.string().nullable(),
   openingTime: z.string().nullable(),
   closingTime: z.string().nullable(),
+  coordinateX: z.number().nullable(),
+  coordinateY: z.number().nullable(),
   articles: z.array(
     z.object({
       id: z.number(),
