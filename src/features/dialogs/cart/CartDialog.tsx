@@ -3,6 +3,7 @@ import Button from "@/components/button/Button";
 import CartArticle from "@/features/pages/home/cart-article";
 import { useCart } from "@/providers/cart-provider";
 import { useDialogContext } from "@/providers/dialog/DialogProvider";
+import { useTable } from "@/providers/table-provider";
 import { usePostOrder } from "@/queries/hooks/usePostOrder";
 import Image from "next/image";
 import { useState } from "react";
@@ -12,6 +13,7 @@ const CartDialog = () => {
   const { close } = useDialogContext();
   const { mutate } = usePostOrder();
   const [comment, setComment] = useState<string>("");
+  const {tableData} = useTable();
 
   const totalPrice = state.articles.reduce(
     (total, article) => total + article.price * article.quantity,
@@ -25,8 +27,8 @@ const CartDialog = () => {
         quantity: article.quantity,
       })),
       total: totalPrice,
-      tableId: 1,
-      barId: 2,
+      tableId: tableData?.tableId,
+      barId: Number(tableData?.barId || 0), 
       status: "PENDING",
       comment: comment || null,
     };
@@ -51,7 +53,7 @@ const CartDialog = () => {
             <Image src={ArrowLeftSvg} alt="Close Icon" width={16} height={16} />
             <p className="hidden md:block">Vrati se na meni</p>
           </Button>
-          <p className="font-[700] text-[22px]">Vasa Narudzba</p>
+          <p className="font-[700] text-[22px]">Vaša Narudžba</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 mt-[20px] gap-[20px]">
           {state.articles.length > 0 ? (
@@ -67,7 +69,7 @@ const CartDialog = () => {
             ))
           ) : (
             <p className="text-center text-neutral-400 mt-[20px]">
-              Your cart is empty
+              Vaša košarica je prazna
             </p>
           )}
         </div>

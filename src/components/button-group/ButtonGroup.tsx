@@ -76,9 +76,9 @@ const ButtonGroup: React.FC<ButtonsGroupProps> = ({
         <Option
           key={option.label}
           label={option.label}
-          value={option.value}
-          selected={value === option.value}
-          onClick={() => changeOption(option.value)}
+          value={option.label}
+          selected={value === option.label}
+          onClick={() => changeOption(option.label)}
         />
       ))}
     </div>

@@ -68,8 +68,8 @@ const OrderStatusDialog = () => {
           </div>
           <p className="mt-[15px] text-[20px]">
             {orders[orders.length - 1]?.status === "PENDING"
-              ? "Narudzba je u obradi"
-              : "Narudzba je zavrsena"}
+              ? "Narudžba je poslana"
+              : "Narudžba je u pripremi"}
           </p>
           <p className="text-[14px]">
             Ukupno za platiti{" "}

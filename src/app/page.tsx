@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useBarData } from "@/queries/hooks/useGetBarData";
 import Header from "@/features/pages/home/header";
 import Article from "@/features/pages/home/article";
@@ -135,7 +135,7 @@ export default function Home() {
               "mb-[30px]",
               selectedCategoryData !== null &&
                 selectedCategoryData !== "" &&
-                selectedCategoryData !== category.toLocaleLowerCase() &&
+                selectedCategoryData !== category &&
                 "hidden"
             )}
           >
@@ -168,7 +168,7 @@ export default function Home() {
           className=" w-[75%] fixed bottom-[10px] left-[12.5%]"
           onClick={() => open("cart")}
         >
-          {orders.length > 0 ? "Nadodaj u narudzbu" : "Naruci"}
+          {orders.length > 0 ? "Nadodaj u narudžbu" : "Naruči"}
         </Button>
       )}
       {orders.length > 0 && (
