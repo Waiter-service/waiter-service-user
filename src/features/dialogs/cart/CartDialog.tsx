@@ -26,7 +26,7 @@ const CartDialog = () => {
         articleId: article.id,
         quantity: article.quantity,
       })),
-      total: totalPrice,
+      total: Number(totalPrice),
       tableId: tableData?.tableId,
       barId: Number(tableData?.barId || 0), 
       status: "PENDING",
