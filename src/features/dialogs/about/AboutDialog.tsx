@@ -24,6 +24,18 @@ interface AboutDialogProps {
 const AboutDialog: FC<AboutDialogProps> = ({ data }) => {
   const { close } = useDialogContext();
 
+  const openingHours = data.openingTime.split(",");
+  const closingHours = data.closingTime.split(",");
+  const days = [
+    "Ponedjeljak",
+    "Utorak",
+    "Srijeda",
+    "Četvrtak",
+    "Petak",
+    "Subota",
+    "Nedjelja",
+  ];
+
   return (
     <div className=" w-full h-full bg-neutral-900 md:p-[20px]">
       <div className="relative w-full h-full max-w-[1440px] overflow-y-scroll ml-auto mr-auto flex flex-col items-center">
@@ -52,14 +64,20 @@ const AboutDialog: FC<AboutDialogProps> = ({ data }) => {
         </div>
         <div className="w-full max-w-[600px] border-b-[2px] border-neutral-400  py-[20px] text-center">
           <p className="text-[22px] font-bold">Radno Vrijeme</p>
-          <p className="text-[20px]">
-            {data.openingTime}-{data.closingTime}
-          </p>
+          <div className="text-[20px] flex flex-col mt-[20px]">
+            {
+              days.map((day, index) => (
+                <span key={index}>
+                  {day}: {openingHours[index]} - {closingHours[index]}
+                </span>
+              ))
+            }
+          </div>
         </div>
         <p className="text-[22px] font-bold mt-[30px]">
           Informacije o partneru
         </p>
-        <div className="mt-[20px]">
+        <div className="my-[20px]">
           {data.description.split("/").map((line, index) => (
             <p key={index} className="text-center text-[20px]">
               {line.trim()}

@@ -1,4 +1,5 @@
 import { CloseSvg } from "@/assets/icons";
+import { PlaceholderJpg } from "@/assets/images";
 import Button from "@/components/button/Button";
 import QuantitySelector from "@/components/quanity-selector";
 import { useCart } from "@/providers/cart-provider";
@@ -59,7 +60,7 @@ const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
     <div className="md:max-w-[450px] md:h-fit w-full h-full bg-neutral-900 md:border-[1px] border-neutral-500 md:rounded-2xl md:p-[20px] flex flex-col justify-between">
       <div className="relative">
         <Image
-          src={data.article.image || "/placeholder.png"}
+          src={data.article.image || PlaceholderJpg}
           alt={data.article.title}
           width={400}
           height={200}
@@ -83,11 +84,11 @@ const ArticleDialog: FC<ArticleDialogProps> = ({ data }) => {
           <div className="flex flex-col w-full border-y-[1px] border-neutral-600 gap-[10px] text-[14px] text-neutral-400 py-[10px] mt-[10px]">
             <div className="flex items-center justify-between w-full">
               <p>Cijena bez PDV-a</p>
-              <p>{data.article.price}€</p>
+              <p>{(data.article.price * 0.75).toFixed(2)}€</p>
             </div>
             <div className="flex items-center justify-between w-full">
               <p>PDV</p>
-              <p>{data.article.price}€</p>
+              <p>{(data.article.price * 0.25).toFixed(2)}€</p>
             </div>
           </div>
           <div className="flex w-full justify-between items-center mt-[10px]">

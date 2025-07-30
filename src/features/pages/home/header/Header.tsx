@@ -57,6 +57,18 @@ const Header: FC<HeaderProps> = ({
     setSelectedCategoryData(option);
   };
 
+  const openingHours = openingTime ? openingTime.split(",") : [];
+  const closingHours = closingTime ? closingTime.split(",") : [];
+
+  const getTodayOpeningHours = () => {
+    const today = new Date().getDay();
+    const openingHour = openingHours[today] || openingTime;
+    const closingHour = closingHours[today] || closingTime;
+    return `${openingHour} - ${closingHour}`;
+  };
+
+  const todayOpeningHours = getTodayOpeningHours();
+
   return (
     <div>
       <div className="relative">
@@ -72,7 +84,20 @@ const Header: FC<HeaderProps> = ({
             <Button variant="gray" className="p-[4px] hidden">
               <Image src={GlobeSvg} alt="Globe Icon" width={20} height={20} />
             </Button>
-            <Button variant="gray" className="p-[4px]" onClick={() => open('about', { name: barName, logo: barLogo, description, location, openingTime, closingTime })}>
+            <Button
+              variant="gray"
+              className="p-[4px]"
+              onClick={() =>
+                open("about", {
+                  name: barName,
+                  logo: barLogo,
+                  description,
+                  location,
+                  openingTime,
+                  closingTime,
+                })
+              }
+            >
               <Image
                 src={DotVerticalFilledSvg}
                 alt="Globe Icon"
@@ -100,11 +125,7 @@ const Header: FC<HeaderProps> = ({
                 height={30}
                 className="bg-neutral-800 rounded-full border-[1px] border-neutral-300 p-[4px]"
               />
-              {openingTime && closingTime && (
-                <p className="text-neutral-300">
-                  {openingTime} - {closingTime}
-                </p>
-              )}
+              <p className="text-neutral-300">{todayOpeningHours}</p>
               <Image
                 src={HouseSvg}
                 alt="Globe Icon"

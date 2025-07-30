@@ -18,7 +18,7 @@ const CartDialog = () => {
   const totalPrice = state.articles.reduce(
     (total, article) => total + article.price * article.quantity,
     0
-  );
+  ).toFixed(2);
 
   const handleOrder = () => {
     const orderDetails = {

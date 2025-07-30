@@ -20,8 +20,6 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
         !searchBarRef.current.contains(event.target as Node)
       ) {
         setIsSearchOpen(false);
-        setSearchInput("");
-        setSearchArticle("");
       }
     };
 
@@ -47,7 +45,7 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
       <Image src={SearchSvg} alt="Search Icon" width={20} height={20} />
       <input
         type="text"
-        placeholder="Pretrazi"
+        placeholder="Pretraži"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         className={cn(
