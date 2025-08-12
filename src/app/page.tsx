@@ -120,12 +120,9 @@ export default function Home() {
     value: category.toLowerCase().replace(/\s+/g, "-"),
   }));
 
-  /**
-   * 
-   *   if (!tableData || !gdprAcceptedState || !isUserInBarRangeP) {
+  if (!tableData || !gdprAcceptedState || !isUserInBarRangeP) {
     return <ErrorPage />;
   }
-   */
 
   return (
     <div className="">
