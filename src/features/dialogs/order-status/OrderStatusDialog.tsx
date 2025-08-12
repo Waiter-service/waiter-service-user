@@ -36,7 +36,7 @@ const OrderStatusDialog = () => {
   }, 0);
 
   return (
-    <div className="w-full h-full bg-neutral-900 overflow-scroll">
+    <div className="w-full h-full bg-neutral-900 overflow-y-scroll hide-scrollbar">
       <div className="max-w-[1440px] ml-auto mr-auto">
         <Button
           variant="darkGray"

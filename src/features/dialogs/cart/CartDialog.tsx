@@ -1,10 +1,12 @@
 import { ArrowLeftSvg } from "@/assets/icons";
 import Button from "@/components/button/Button";
 import CartArticle from "@/features/pages/home/cart-article";
+import useOrders from "@/hooks/useOrder";
 import { useCart } from "@/providers/cart-provider";
 import { useDialogContext } from "@/providers/dialog/DialogProvider";
 import { useTable } from "@/providers/table-provider";
 import { usePostOrder } from "@/queries/hooks/usePostOrder";
+import { cn } from "@/utils/misc/cn/cn";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -13,12 +15,12 @@ const CartDialog = () => {
   const { close } = useDialogContext();
   const { mutate } = usePostOrder();
   const [comment, setComment] = useState<string>("");
-  const {tableData} = useTable();
+  const { tableData } = useTable();
+  const orders = useOrders(tableData?.tableId || 0);
 
-  const totalPrice = state.articles.reduce(
-    (total, article) => total + article.price * article.quantity,
-    0
-  ).toFixed(2);
+  const totalPrice = state.articles
+    .reduce((total, article) => total + article.price * article.quantity, 0)
+    .toFixed(2);
 
   const handleOrder = () => {
     const orderDetails = {
@@ -28,7 +30,7 @@ const CartDialog = () => {
       })),
       total: Number(totalPrice),
       tableId: tableData?.tableId,
-      barId: Number(tableData?.barId || 0), 
+      barId: Number(tableData?.barId || 0),
       status: "PENDING",
       comment: comment || null,
     };
@@ -42,7 +44,7 @@ const CartDialog = () => {
   };
 
   return (
-    <div className="w-full h-full bg-neutral-900 px-[10px] overflow-scroll">
+    <div className="w-full h-full bg-neutral-900 px-[10px] overflow-scroll hide-scrollbar">
       <div className="max-w-[1440px] ml-auto mr-auto">
         <div className="w-full flex justify-between items-center py-[30px]">
           <Button
@@ -81,6 +83,9 @@ const CartDialog = () => {
           onChange={(e) => setComment(e.target.value)}
         ></textarea>
       </div>
+      <p className={cn("text-center my-[20px]", orders.length < 3 && "hidden")}>
+        Dostupne su samo 3 preinake narudžbe!
+      </p>
       <div className="mt-[20px] pb-[50px] w-full flex justify-center">
         <Button
           variant="green"
@@ -88,7 +93,7 @@ const CartDialog = () => {
           onClick={() => {
             handleOrder();
           }}
-          disabled={state.articles.length === 0}
+          disabled={state.articles.length === 0 || orders.length > 2}
         >
           <p>
             <span className="bg-white  text-[var(--brand-green)] rounded-full px-[5px] py-[2px] mr-[10px]">
