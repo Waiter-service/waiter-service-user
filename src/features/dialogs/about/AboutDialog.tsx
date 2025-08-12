@@ -38,7 +38,7 @@ const AboutDialog: FC<AboutDialogProps> = ({ data }) => {
 
   return (
     <div className=" w-full h-full bg-neutral-900 md:p-[20px]">
-      <div className="relative w-full h-full max-w-[1440px] overflow-y-scroll hide-scrollbar ml-auto mr-auto flex flex-col items-center">
+      <div className="relative w-full h-full max-w-[1440px] overflow-y-scroll hide-scrollbar ml-auto mr-auto flex flex-col items-center pb-[100px]">
         <div className="flex items-center justify-between p-[20px] w-full">
           <Button
             variant="darkGray"

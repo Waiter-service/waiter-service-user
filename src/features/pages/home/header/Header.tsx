@@ -124,7 +124,7 @@ const Header: FC<HeaderProps> = ({
               />
             </div>
             <p className="text-[32px] md:hidden">{barName}</p>
-            <div className="flex items-center gap-[5px] md:hidden">
+            <div className="flex items-center ml-[10px] gap-[10px] md:hidden">
               <div
                 onClick={() => toggleVisibility("openingHours")}
                 className="cursor-pointer"
