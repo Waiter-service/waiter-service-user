@@ -5,13 +5,14 @@ import {
   DotVerticalFilledSvg,
   ClockSvg,
   HouseSvg,
+  InstagramSvg,
 } from "@/assets/icons";
 import Button from "@/components/button/Button";
 import ButtonGroup from "@/components/button-group";
 import SearchBar from "@/components/search-bar";
 import { useTable } from "@/providers/table-provider";
-import Link from "next/link";
 import { useDialogContext } from "@/providers/dialog/DialogProvider";
+import { cn } from "@/utils/misc/cn/cn";
 
 interface HeaderProps {
   bar?: {
@@ -69,6 +70,12 @@ const Header: FC<HeaderProps> = ({
 
   const todayOpeningHours = getTodayOpeningHours();
 
+  const [visibleText, setVisibleText] = useState<string | null>(null);
+
+  const toggleVisibility = (key: string) => {
+    setVisibleText((prev) => (prev === key ? null : key));
+  };
+
   return (
     <div>
       <div className="relative">
@@ -117,23 +124,78 @@ const Header: FC<HeaderProps> = ({
               />
             </div>
             <p className="text-[32px] md:hidden">{barName}</p>
-            <div className="flex items-center gap-[10px] md:hidden">
-              <Image
-                src={ClockSvg}
-                alt="Globe Icon"
-                width={30}
-                height={30}
-                className="bg-neutral-800 rounded-full border-[1px] border-neutral-300 p-[4px]"
-              />
-              <p className="text-neutral-300">{todayOpeningHours}</p>
-              <Image
-                src={HouseSvg}
-                alt="Globe Icon"
-                width={30}
-                height={30}
-                className="bg-neutral-800 rounded-full border-[1px] border-neutral-300 p-[4px]"
-              />
-              <p className="text-neutral-300">{location}</p>
+            <div className="flex items-center gap-[5px] md:hidden">
+              <div
+                onClick={() => toggleVisibility("openingHours")}
+                className="cursor-pointer"
+              >
+                <Image
+                  src={ClockSvg}
+                  alt="Clock Icon"
+                  width={30}
+                  height={30}
+                  className="bg-neutral-800 rounded-full border-[1px] border-neutral-300 p-[4px]"
+                />
+              </div>
+              <p
+                className={cn(
+                  "text-neutral-300 max-w-0 overflow-hidden",
+                  visibleText === "openingHours" && "max-w-full opacity-100"
+                )}
+              >
+                <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                  {todayOpeningHours}
+                </span>
+              </p>
+
+              <div
+                onClick={() => toggleVisibility("location")}
+                className="cursor-pointer"
+              >
+                <Image
+                  src={HouseSvg}
+                  alt="House Icon"
+                  width={30}
+                  height={30}
+                  className="bg-neutral-800 rounded-full border-[1px] border-neutral-300 p-[4px]"
+                />
+              </div>
+              <p
+                className={cn(
+                  "text-neutral-300 max-w-0 overflow-hidden",
+                  visibleText === "location" && "max-w-full opacity-100"
+                )}
+              >
+                <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                  {location}
+                </span>
+              </p>
+
+              <div
+                onClick={() => toggleVisibility("instagram")}
+                className="cursor-pointer bg-neutral-800 p-[5px] rounded-full border-[1px] border-neutral-300"
+              >
+                <Image
+                  src={InstagramSvg}
+                  alt="Instagram Icon"
+                  width={20}
+                  height={20}
+                  className="scale-90"
+                />
+              </div>
+              <p
+                className={cn(
+                  "text-neutral-300 max-w-0 overflow-hidden",
+                  visibleText === "instagram" && "max-w-full opacity-100"
+                )}
+              >
+                <a
+                  href="https://www.instagram.com/lamancaffebar/"
+                  className="text-neutral-300"
+                >
+                  profil
+                </a>
+              </p>
             </div>
           </div>
         </div>

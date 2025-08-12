@@ -95,8 +95,8 @@ const OrderStatusDialog = () => {
             </div>
           ))}
         </div>
-        <div className=" bg-neutral-800 min-h-[100px] m-[20px] p-[20px] rounded-2xl">
-          {orders ? (
+        {orders && orders.some((order) => order.comment) && (
+          <div className=" bg-neutral-800 min-h-[100px] m-[20px] p-[20px] rounded-2xl">
             <>
               <p className="">Komentari:</p>
               {orders.map((order) =>
@@ -110,12 +110,8 @@ const OrderStatusDialog = () => {
                 ) : null
               )}
             </>
-          ) : (
-            <p className="text-neutral-400 p-[20px]">
-              Nema dodatnih komentara.
-            </p>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -78,7 +78,7 @@ const CartDialog = () => {
         <p className="mt-[20px]">Komentar</p>
         <textarea
           className="w-full h-[100px] p-[10px] bg-neutral-800 text-neutral-300 rounded-lg mt-[10px] focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)]"
-          placeholder="Add a comment..."
+          placeholder="Dodajte komentar..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         ></textarea>

@@ -7,3 +7,4 @@ export { default as GlobeSvg } from "./globe.svg";
 export { default as DotVerticalFilledSvg } from "./dot-vertical-filled.svg";
 export { default as ClockSvg } from "./clock.svg";
 export { default as HouseSvg } from "./house.svg";
+export { default as InstagramSvg } from "./instagram.svg";

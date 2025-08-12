@@ -38,7 +38,7 @@ const AboutDialog: FC<AboutDialogProps> = ({ data }) => {
 
   return (
     <div className=" w-full h-full bg-neutral-900 md:p-[20px]">
-      <div className="relative w-full h-full max-w-[1440px] overflow-y-scroll ml-auto mr-auto flex flex-col items-center">
+      <div className="relative w-full h-full max-w-[1440px] overflow-y-scroll hide-scrollbar ml-auto mr-auto flex flex-col items-center">
         <div className="flex items-center justify-between p-[20px] w-full">
           <Button
             variant="darkGray"
@@ -55,14 +55,14 @@ const AboutDialog: FC<AboutDialogProps> = ({ data }) => {
           alt="Bar Logo"
           width={200}
           height={200}
-          className="w-[200px] h-[200px] mt-[30px] border-[3px] border-neutral-400 rounded-full object-cover"
+          className="w-[200px] h-[200px] mt-[30px] border-[3px] rounded-full object-cover"
         />
         <p className="text-[32px] mt-[20px]">{data.name}</p>
-        <div className="w-full max-w-[600px] border-y-[2px] border-neutral-400 mt-[30px] py-[20px] text-center">
+        <div className="w-full max-w-[600px]mt-[30px] py-[20px] text-center">
           <p className="text-[22px] font-bold">Adresa</p>
           <p className="text-[20px]">{data.location}</p>
         </div>
-        <div className="w-full max-w-[600px] border-b-[2px] border-neutral-400  py-[20px] text-center">
+        <div className="w-full max-w-[600px] py-[20px] text-center">
           <p className="text-[22px] font-bold">Radno Vrijeme</p>
           <div className="text-[20px] flex flex-col mt-[20px]">
             {
